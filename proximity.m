@@ -41,6 +41,10 @@ FBS = cell(1,3);
 for i=1:3
     FBS{i} = FemtoStation(180+(i-1)*35,150, BS, mue1, 10);
 end
+%% Initialization and find MUE Capacity
+
+%% Main Loop
+
 %% Generate Reward Matrix
 Reward = zeros(size(states,1), size(actions,2));
 for j=1:size(FBS,2)
