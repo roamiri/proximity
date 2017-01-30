@@ -33,28 +33,57 @@ states = allcomb(0:1 , 0:3 , 0:3); % states = ( I , dMUE , dBS)
 
 % Q-Table
 Q = zeros(size(states,1) , size(actions , 2));
+Q1 = ones(size(states,1) , size(actions , 2)) * inf;
 
-alpha = 0.5; gamma = 0.9; epsilon = 0.1 ; Iterations = 5000;
+alpha = 0.5; gamma = 0.9; epsilon = 0.1 ; Iterations = 50000;
 %% Generate the UEs
 mue1 = UE(-200, 0);
+mue2 = UE(204, 207);
+mue3 = UE(150, 150);
+selectedMUE = mue3;
 BS = BaseStation(0 , 0 , 50);
-FBS = cell(1,3);
+FBS = cell(1,16);
 for i=1:3
-    FBS{i} = FemtoStation(180+(i-1)*35,150, BS, mue1, 10);
+    FBS{i} = FemtoStation(180+(i-1)*35,150, BS, selectedMUE, 10);
 end
+
+for i=1:3
+    FBS{i+3} = FemtoStation(150+(i-1)*35,180, BS, selectedMUE, 10);
+end
+
+for i=1:4
+    FBS{i+6} = FemtoStation(180+(i-1)*35,215, BS, selectedMUE, 10);
+end
+
+for i=1:3
+    FBS{i+10} = FemtoStation(150+(i-1)*35,245, BS, selectedMUE, 10);
+end
+
+for i=1:3
+    FBS{i+13} = FemtoStation(180+(i-1)*35,280, BS, selectedMUE, 10);
+end
+
+% figure;
+% hold on;
+% for i=1:16
+%     fbs = FBS{j};
+%     p = plot(fbs.X, fbs.Y);
+%     p.Marker = '*';
+% end
 %% Initialization and find MUE Capacity
-permutedPowers = npermutek(actions,3);
-y=randperm(size(permutedPowers,1));
+% permutedPowers = npermutek(actions,3);
+permutedPowers = randperm(size(actions,2),size(FBS,2));
+% y=randperm(size(permutedPowers,1));
 for j=1:size(FBS,2)
     fbs = FBS{j};
-    fbs = fbs.setPower(permutedPowers(y(1),j));
+    fbs = fbs.setPower(actions(permutedPowers(j)));
     fbs = fbs.getDistanceStatus;
     FBS{j} = fbs;
 end
-mue1.SINR = SINR_MUE(FBS, BS, mue1, -120);
-mue1.C = log2(1+mue1.SINR);
+selectedMUE.SINR = SINR_MUE(FBS, BS, selectedMUE, -120);
+selectedMUE.C = log2(1+selectedMUE.SINR);
 
-if mue1.C < gamma_th
+if selectedMUE.C < gamma_th
     I = 1;
 else
     I = 0;
@@ -69,16 +98,16 @@ end
 textprogressbar('calculating outputs: ');
 for episode = 1:Iterations
     textprogressbar((episode/Iterations)*100);
-    y=randperm(size(permutedPowers,1));
+    permutedPowers = randperm(size(actions,2),size(FBS,2));
     for j=1:size(FBS,2)
         fbs = FBS{j};
-        fbs = fbs.setPower(permutedPowers(y(1),j));
+        fbs = fbs.setPower(actions(permutedPowers(j)));
         FBS{j} = fbs;
     end
     
-    mue1.SINR = SINR_MUE(FBS, BS, mue1, -120);
-    mue1.C = log2(1+mue1.SINR);
-    R = K - (mue1.SINR - 2)^2;
+    selectedMUE.SINR = SINR_MUE(FBS, BS, selectedMUE, -120);
+    selectedMUE.C = log2(1+selectedMUE.SINR);
+    R = K - (selectedMUE.SINR - 2)^2;
     for j=1:size(FBS,2)
         fbs = FBS{j};
         qMax=max(Q,[],2);
@@ -94,7 +123,22 @@ for episode = 1:Iterations
             end
         end
     end
-    if mue1.C < gamma_th
+    
+    % break if convergence: small deviation on q for 1000 consecutive
+    errorVector(episode) =  sum(sum(abs(Q1-Q)));
+    if sum(sum(abs(Q1-Q)))<0.0001 && sum(sum(Q >0))
+        if count>1000
+            episode  % report last episode
+            break % for
+        else
+            count=count+1; % set counter if deviation of q is small
+        end
+    else
+        Q1=Q;
+        count=0;  % reset counter when deviation of q from previous q is large
+    end
+    
+    if selectedMUE.C < gamma_th
         I = 1;
     else
         I = 0;
