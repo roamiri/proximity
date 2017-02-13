@@ -96,17 +96,38 @@ for j=1:size(FBS,2)
 end
 %% Main Loop
 textprogressbar('calculating outputs: ');
+% A=[];
+% test = [16    29    10    27    22    23     7    25     5     6    14    17    21     4     2    11];
+% count = 0;
+MUE_C = zeros(1,Iterations);
 for episode = 1:Iterations
     textprogressbar((episode/Iterations)*100);
     permutedPowers = randperm(size(actions,2),size(FBS,2));
-    for j=1:size(FBS,2)
-        fbs = FBS{j};
-        fbs = fbs.setPower(actions(permutedPowers(j)));
-        FBS{j} = fbs;
-    end
     
+    % Action selection with epsilon=0.1
+    if rand<0.1
+        for j=1:size(FBS,2)
+            fbs = FBS{j};
+            fbs = fbs.setPower(actions(permutedPowers(j)));
+            FBS{j} = fbs;
+        end
+    else
+        for j=1:size(FBS,2)
+            fbs = FBS{j};
+            for kk = 1:32
+                if states(kk,:) == fbs.state
+                    break;
+                end
+            end
+            [M, index] = max(Q(kk,:));
+            fbs = fbs.setPower(actions(index));
+            FBS{j} = fbs;
+        end
+    end
+ 
     selectedMUE.SINR = SINR_MUE(FBS, BS, selectedMUE, -120);
     selectedMUE.C = log2(1+selectedMUE.SINR);
+    MUE_C(1,episode) = selectedMUE.C;
     R = K - (selectedMUE.SINR - 2)^2;
     for j=1:size(FBS,2)
         fbs = FBS{j};
@@ -118,8 +139,19 @@ for episode = 1:Iterations
         end
         for kk = 1:32
             if states(kk,:) == fbs.state
-                Q(kk,jjj) = Q(kk,jjj) + 0.5*(R+gamma*qMax(kk)-Q(kk,jjj));
                 break;
+            end
+        end
+        % CALCULATING NEXT STATE
+        if selectedMUE.C < gamma_th
+            I = 1;
+        else
+            I = 0;
+        end
+        
+        for nextState=1:32
+            if states(nextState,:) == [I fbs.state(2:3)]
+                Q(kk,jjj) = Q(kk,jjj) + 0.5*(R+gamma*qMax(nextState)-Q(kk,jjj));
             end
         end
     end
@@ -144,7 +176,7 @@ for episode = 1:Iterations
         I = 0;
     end
 
-    for j=1:size(FBS,2)
+    for j=1:size(FBS,2) 
         fbs = FBS{j};
         fbs.state(1,1) = I;
         FBS{j} = fbs;
