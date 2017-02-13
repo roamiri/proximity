@@ -103,13 +103,26 @@ MUE_C = zeros(1,Iterations);
 for episode = 1:Iterations
     textprogressbar((episode/Iterations)*100);
     permutedPowers = randperm(size(actions,2),size(FBS,2));
-    
-    % Action selection with epsilon=0.1
-    if rand<0.1
-        for j=1:size(FBS,2)
-            fbs = FBS{j};
-            fbs = fbs.setPower(actions(permutedPowers(j)));
-            FBS{j} = fbs;
+    if (episode/Iterations)*100 < 80
+        % Action selection with epsilon=0.1
+        if rand<0.1
+            for j=1:size(FBS,2)
+                fbs = FBS{j};
+                fbs = fbs.setPower(actions(permutedPowers(j)));
+                FBS{j} = fbs;
+            end
+        else
+            for j=1:size(FBS,2)
+                fbs = FBS{j};
+                for kk = 1:32
+                    if states(kk,:) == fbs.state
+                        break;
+                    end
+                end
+                [M, index] = max(Q(kk,:));
+                fbs = fbs.setPower(actions(index));
+                FBS{j} = fbs;
+            end
         end
     else
         for j=1:size(FBS,2)
@@ -123,7 +136,7 @@ for episode = 1:Iterations
             fbs = fbs.setPower(actions(index));
             FBS{j} = fbs;
         end
-    end
+    end 
  
     selectedMUE.SINR = SINR_MUE(FBS, BS, selectedMUE, -120);
     selectedMUE.C = log2(1+selectedMUE.SINR);
