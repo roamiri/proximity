@@ -80,7 +80,7 @@ for j=1:size(FBS,2)
     fbs = fbs.getDistanceStatus;
     FBS{j} = fbs;
 end
-selectedMUE.SINR = SINR_MUE(FBS, BS, selectedMUE, -120);
+selectedMUE.SINR = SINR_MUE(FBS, BS, selectedMUE, -120, 1000);
 selectedMUE.C = log2(1+selectedMUE.SINR);
 
 if selectedMUE.C < gamma_th
@@ -100,6 +100,7 @@ textprogressbar('calculating outputs: ');
 % test = [16    29    10    27    22    23     7    25     5     6    14    17    21     4     2    11];
 % count = 0;
 MUE_C = zeros(1,Iterations);
+xx = zeros(1,Iterations);
 for episode = 1:Iterations
     textprogressbar((episode/Iterations)*100);
     permutedPowers = randperm(size(actions,2),size(FBS,2));
@@ -138,10 +139,11 @@ for episode = 1:Iterations
         end
     end 
  
-    selectedMUE.SINR = SINR_MUE(FBS, BS, selectedMUE, -120);
+    selectedMUE.SINR = SINR_MUE(FBS, BS, selectedMUE, -120, 1000);
     selectedMUE.C = log2(1+selectedMUE.SINR);
     MUE_C(1,episode) = selectedMUE.C;
-    R = K - (selectedMUE.SINR - 2)^2;
+    xx(1,episode) = episode;
+    R = K - (selectedMUE.SINR - 20)^2;
     for j=1:size(FBS,2)
         fbs = FBS{j};
         qMax=max(Q,[],2);
