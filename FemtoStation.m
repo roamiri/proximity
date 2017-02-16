@@ -11,6 +11,7 @@ classdef FemtoStation
       dM1 = 15; dM2 = 50; dM3 = 125; 
       dB1 = 50; dB2 = 150; dB3 = 400;
       state = zeros(1,3)
+      powerProfile = []
    end
    methods
       function obj = FemtoStation(xPos, yPos, BS, MUE, dFUE)
@@ -24,6 +25,7 @@ classdef FemtoStation
       function obj = setPower(obj,power)
 %           obj.P = 10^((power-30)/10);
             obj.P = power;
+            obj.powerProfile = [obj.powerProfile power];
       end
       
       function obj = getDistanceStatus(obj)

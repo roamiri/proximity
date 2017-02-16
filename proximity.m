@@ -19,7 +19,7 @@ Gmue = 1.37; % bps/Hz
 StepSize = 1.5; % dBm
 K = 1000;
 PBS = 50 ; %dBm
-sinr_th = 10^(2/10); % I am not sure if it is 2 or 20!!!!!
+sinr_th = 1.64;%10^(2/10); % I am not sure if it is 2 or 20!!!!!
 gamma_th = log2(1+sinr_th);
 %% Q-Learning variables
 % Actions
@@ -63,13 +63,6 @@ for i=1:3
     FBS{i+13} = FemtoStation(180+(i-1)*35,280, BS, selectedMUE, 10);
 end
 
-% figure;
-% hold on;
-% for i=1:16
-%     fbs = FBS{j};
-%     p = plot(fbs.X, fbs.Y);
-%     p.Marker = '*';
-% end
 %% Initialization and find MUE Capacity
 % permutedPowers = npermutek(actions,3);
 permutedPowers = randperm(size(actions,2),size(FBS,2));
@@ -106,7 +99,7 @@ for episode = 1:Iterations
     permutedPowers = randperm(size(actions,2),size(FBS,2));
     if (episode/Iterations)*100 < 80
         % Action selection with epsilon=0.1
-        if rand<0.1
+        if rand<epsilon
             for j=1:size(FBS,2)
                 fbs = FBS{j};
                 fbs = fbs.setPower(actions(permutedPowers(j)));
@@ -166,14 +159,14 @@ for episode = 1:Iterations
         
         for nextState=1:32
             if states(nextState,:) == [I fbs.state(2:3)]
-                Q(kk,jjj) = Q(kk,jjj) + 0.5*(R+gamma*qMax(nextState)-Q(kk,jjj));
+                Q(kk,jjj) = Q(kk,jjj) + alpha*(R+gamma*qMax(nextState)-Q(kk,jjj));
             end
         end
     end
     
     % break if convergence: small deviation on q for 1000 consecutive
     errorVector(episode) =  sum(sum(abs(Q1-Q)));
-    if sum(sum(abs(Q1-Q)))<0.0001 && sum(sum(Q >0))
+    if sum(sum(abs(Q1-Q)))<0.01 && sum(sum(Q >0))
         if count>1000
             episode  % report last episode
             break % for
