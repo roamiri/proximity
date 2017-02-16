@@ -2,6 +2,8 @@
 %                     Simulation of the paper:
 %   A proximity-based Q-Learning Reward Function for Femtocell Networks
 %
+function proximity_R1(mueNumber)
+
 %% Initialization
 clear all;
 clc;
@@ -37,10 +39,10 @@ Q1 = ones(size(states,1) , size(actions , 2)) * inf;
 
 alpha = 0.5; gamma = 0.9; epsilon = 0.1 ; Iterations = 50000;
 %% Generate the UEs
-mue1 = UE(-200, 0);
-mue2 = UE(204, 207);
-mue3 = UE(150, 150);
-selectedMUE = mue3;
+mue(1) = UE(204, 207);
+mue(2) = UE(150, 150);
+mue(3) = UE(-200, 0);
+selectedMUE = mue(mueNumber);
 BS = BaseStation(0 , 0 , 50);
 
 QFinal = cell(1,16);
@@ -152,7 +154,7 @@ for fbsCount=1:16
         selectedMUE.C = log2(1+selectedMUE.SINR);
         MUE_C(1,episode) = selectedMUE.C;
         xx(1,episode) = episode;
-        R = K - (selectedMUE.SINR - 20)^2;
+        R = K - (selectedMUE.SINR - sinr_th)^2;
         for j=1:size(FBS,2)
             fbs = FBS{j};
             qMax=max(Q,[],2);
@@ -214,7 +216,7 @@ for fbsCount=1:16
 end
 save(sprintf('R1-MUE:%d,%d.mat',selectedMUE.X, selectedMUE.Y),'QFinal');
 
-
+end
 
 
 
