@@ -5,7 +5,7 @@
 function proximity_R1(mueNumber)
 
 %% Initialization
-clear all;
+% clear all;
 clc;
 format short
 format compact
