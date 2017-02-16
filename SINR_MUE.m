@@ -1,6 +1,6 @@
 function SINR = SINR_MUE(FBS, BS, mue, sigma2, NumRealization) % inputs are dBm, output is not db
     sinr_sum = 0;
-    for i=1:NumRealization
+    for j=1:NumRealization
         % compute power of signal at UE received from BS
         d = sqrt((BS.X-mue.X)^2+(BS.Y-mue.Y)^2);
         PL_BS = 62.3+40*log10(d/5);

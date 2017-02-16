@@ -22,17 +22,13 @@ strDotsMaximum      = 10;   %   The total number of dots in a progress bar
 
 %% Main 
 
-if isempty(strCR) && ~ischar(c),
+if isempty(strCR) && ~ischar(c)
     % Progress bar must be initialized with a string
     error('The text progress must be initialized with a string');
-elseif isempty(strCR) && ischar(c),
+elseif isempty(strCR) && ischar(c)
     % Progress bar - initialization
     fprintf('%s',c);
     strCR = -1;
-elseif ~isempty(strCR) && ischar(c),
-    % Progress bar  - termination
-    strCR = [];  
-    fprintf([c '\n']);
 elseif isnumeric(c)
     % Progress bar - normal progress
     c = floor(c);
@@ -54,6 +50,11 @@ elseif isnumeric(c)
     % Update carriage return
     strCR = repmat('\b',1,length(strOut)-1);
     
+    if ~isempty(strCR) && c==100%ischar(c)
+        % Progress bar  - termination
+        strCR = [];  
+        fprintf([c '\n']);
+    end
 else
     % Any other unexpected input
     error('Unsupported argument type');
