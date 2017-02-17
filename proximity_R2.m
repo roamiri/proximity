@@ -89,7 +89,7 @@ for fbsCount=1:16
         fbs = fbs.getDistanceStatus;
         FBS{j} = fbs;
     end
-    selectedMUE.SINR = SINR_MUE(FBS, BS, selectedMUE, -120, 1000);
+    selectedMUE.SINR = SINR_MUE_2(FBS, BS, selectedMUE, -120, 1000);
     selectedMUE.C = log2(1+selectedMUE.SINR);
 
     if selectedMUE.C < gamma_th

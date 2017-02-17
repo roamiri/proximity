@@ -106,8 +106,6 @@ for fbsCount=1:16
     %% Main Loop
     fprintf('Loop for %d number of FBS :\t', fbsCount);
     textprogressbar(sprintf('calculating outputs:'));
-    % A=[];
-    % test = [16    29    10    27    22    23     7    25     5     6    14    17    21     4     2    11];
     count = 0;
     MUE_C = zeros(1,Iterations);
     xx = zeros(1,Iterations);
