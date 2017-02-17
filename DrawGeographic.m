@@ -4,7 +4,8 @@ hold on;
 
 dM1 = 15; dM2 = 50; dM3 = 125; 
 dB1 = 50; dB2 = 150; dB3 = 400;
-
+BS = BaseStation(0 , 0 , 50);
+FBS = QFinal{16}.FBS;
 for i=1:16
     fbs = FBS{i};
     p = plot(fbs.X, fbs.Y);
@@ -20,7 +21,8 @@ p.Marker = 'diamond';
 circle(BS.X,BS.Y,dB1);
 circle(BS.X,BS.Y,dB2);
 circle(BS.X,BS.Y,dB3);
-
+selectedMUE.X = 150;
+selectedMUE.Y = 150;
 p = plot(selectedMUE.X, selectedMUE.Y);
 p.Marker = 'square';
 circle(selectedMUE.X,selectedMUE.Y,dM1);

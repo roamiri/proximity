@@ -6,6 +6,8 @@ classdef FemtoStation
       dBS
       dMUE
       dFUE
+      FUEX
+      FUEY
       M  % distance with MUE
       B  % distance with BS
       dM1 = 15; dM2 = 50; dM3 = 125; 
@@ -20,6 +22,8 @@ classdef FemtoStation
         obj.dBS = sqrt((xPos-BS.X)^2 + (yPos-BS.Y)^2);
         obj.dMUE = sqrt((xPos-MUE.X)^2 + (yPos-MUE.Y)^2);
         obj.dFUE = dFUE;
+        obj.FUEX = xPos;
+        obj.FUEY = yPos+dFUE;
       end
       
       function obj = setPower(obj,power)
