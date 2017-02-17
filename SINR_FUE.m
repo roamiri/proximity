@@ -34,7 +34,8 @@ function SINR = SINR_FUE(FBS, BS, sigma2, NumRealization)
     for i=1:fbsNum
         for j=1:fbsNum
             if i~=j
-                P_interface(1,:) = P_interface(1,:) + Pij(j,i).*hij(j,i,:);
+                dum(1:NumRealization) = Pij(i,i).*hij(i,i,:);
+                P_interface(1,:) = P_interface(1,:) + dum(1,:);
             end
         end
         nom(1:NumRealization) = Pij(i,i).*hij(i,i,:);

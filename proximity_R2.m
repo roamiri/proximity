@@ -214,6 +214,6 @@ for fbsCount=1:16
     answer.FBS = FBS;
     QFinal{fbsCount} = answer;
 end
-save(sprintf('R2-MUE:%d,%d.mat',selectedMUE.X, selectedMUE.Y),'QFinal');
+save(sprintf('Results/R2-MUE:%d,%d.mat',selectedMUE.X, selectedMUE.Y),'QFinal');
 
 end
