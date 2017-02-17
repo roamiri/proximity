@@ -110,6 +110,13 @@ for fbsCount=1:16
     MUE_C = zeros(1,Iterations);
     xx = zeros(1,Iterations);
     errorVector = zeros(1,Iterations);
+    % K1 is distance of selectedMUE from Agents
+    k1 = zeros(1,size(FBS,2));
+    dth = 25; %meter
+    Kp = 100;
+    for i=1:size(FBS,2)
+        k1(i) = (sqrt((FBS{i}.X-selectedMUE.X)^2+(FBS{i}.Y-selectedMUE.Y)^2))/dth;
+    end
     for episode = 1:Iterations
         textprogressbar((episode/Iterations)*100);
         permutedPowers = randperm(size(actions,2),size(FBS,2));
@@ -148,11 +155,12 @@ for fbsCount=1:16
             end
         end 
 
+        SINR_FUE_Vec = SINR_FUE(FBS, BS, -120, 1e5);
         selectedMUE.SINR = SINR_MUE_2(FBS, BS, selectedMUE, -120, 1e5);
         selectedMUE.C = log2(1+selectedMUE.SINR);
         MUE_C(1,episode) = selectedMUE.C;
         xx(1,episode) = episode;
-        R = K - (selectedMUE.SINR - sinr_th)^2;
+%         R = K - (selectedMUE.SINR - sinr_th)^2;
         for j=1:size(FBS,2)
             fbs = FBS{j};
             qMax=max(Q,[],2);
@@ -166,11 +174,14 @@ for fbsCount=1:16
                     break;
                 end
             end
-            % CALCULATING NEXT STATE
+            % CALCULATING NEXT STATE AND REWARD
+            fbs.C_FUE = log2(1+SINR_FUE_Vec(j));
             if selectedMUE.C < gamma_th
                 I = 1;
+                R = k1(j)* fbs.C_FUE - (Kp/k1(j));
             else
                 I = 0;
+                R = k1(j)* fbs.C_FUE - (1/k1(j))*(selectedMUE.C - gamma_th)^2;
             end
 
             for nextState=1:32

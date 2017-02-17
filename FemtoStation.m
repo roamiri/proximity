@@ -14,6 +14,7 @@ classdef FemtoStation
       dB1 = 50; dB2 = 150; dB3 = 400;
       state = zeros(1,3)
       powerProfile = []
+      C_FUE
    end
    methods
       function obj = FemtoStation(xPos, yPos, BS, MUE, dFUE)

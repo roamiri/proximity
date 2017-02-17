@@ -18,7 +18,7 @@ function SINR = SINR_FUE(FBS, BS, sigma2, NumRealization)
     
     Hij = abs((1/sqrt(2)) * (randn(fbsNum, fbsNum, NumRealization)+1i*randn(fbsNum, fbsNum, NumRealization)));
     hij = Hij.^2;
-    P_interface = zeors(1,NumRealization);
+    P_interface = zeros(1,NumRealization);
     Pij = zeros(fbsNum,fbsNum);
     for i=1:fbsNum
         pAgent = FBS{i}.P;
@@ -37,6 +37,8 @@ function SINR = SINR_FUE(FBS, BS, sigma2, NumRealization)
                 P_interface(1,:) = P_interface(1,:) + Pij(j,i).*hij(j,i,:);
             end
         end
-        SINR(i) = sum((Pij(i,i).*hij(i,i,:))./(PBS(i,:)+P_interface+sigma))/NumRealization;
+        nom(1:NumRealization) = Pij(i,i).*hij(i,i,:);
+        denom(1:NumRealization) = PBS(i,:)+P_interface+sigma;
+        SINR(i) = sum(nom./denom)/NumRealization;
     end
 end
