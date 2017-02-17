@@ -21,7 +21,9 @@ strPercentageLength = 10;   %   Length of percentage string (must be >5)
 strDotsMaximum      = 10;   %   The total number of dots in a progress bar
 
 %% Main 
-
+if c == 'calculating outputs:'
+    strCR = [];
+end
 if isempty(strCR) && ~ischar(c)
     % Progress bar must be initialized with a string
     error('The text progress must be initialized with a string');
