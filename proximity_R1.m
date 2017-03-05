@@ -112,6 +112,7 @@ for fbsCount=1:16
     MUE_C = zeros(1,Iterations);
     xx = zeros(1,Iterations);
     errorVector = zeros(1,Iterations);
+    Final_episode = 0;
     for episode = 1:Iterations
         textprogressbar((episode/Iterations)*100);
         permutedPowers = randperm(size(actions,2),size(FBS,2));
@@ -186,7 +187,7 @@ for fbsCount=1:16
         errorVector(episode) =  sum(sum(abs(Q1-Q)));
         if sum(sum(abs(Q1-Q)))<0.01 && sum(sum(Q >0))
             if count>1000
-                episode  % report last episode
+                Final_episode=episode  % report last episode
                 break % for
             else
                 count=count+1; % set counter if deviation of q is small
@@ -208,7 +209,12 @@ for fbsCount=1:16
             FBS{j} = fbs;
         end
     end
-    answer.C = sum(MUE_C(0.9*Iterations:Iterations))/(0.1*Iterations);
+    if Final_episode~=0
+        answer.C = sum(MUE_C(0.9*Final_episode:Final_episode))/(0.1*Final_episode);
+    else
+        answer.C = sum(MUE_C(0.9*Iterations:Iterations))/(0.1*Iterations);
+    end
+%     answer.C = sum(MUE_C(0.9*Iterations:Iterations))/(0.1*Iterations);
     answer.Q = Q;
     answer.Error = errorVector;
     answer.FBS = FBS;
