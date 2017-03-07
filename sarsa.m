@@ -2,7 +2,9 @@
 %                     Main Loop Runner in parallel:
 %   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-parpool(3)
-parfor i=1:16
-    Rn1(i,100);
+function sarsa(poolSize,fbsCount,NumRealization)
+parpool(poolSize)
+parfor i=1:fbsCount
+    Rn1(i,NumRealization);
+end
 end
