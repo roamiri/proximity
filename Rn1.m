@@ -190,7 +190,7 @@ QFinal = cell(1,16);
             for i=1:size(mue,1)
                 deviation_MUE = deviation_MUE + (mue(i).C-q_N)^2;
             end
-            R = (fbs.dMUE/dth)*K - deviation_MUE - (fbs.C_FUE-q_M)^2;
+            R = K - deviation_MUE - (fbs.C_FUE-q_M)^2;
 %             if selectedMUE.C < gamma_th
 %                 I = 1;
 %                 R = k1(j)* fbs.C_FUE - (Kp/k1(j));
@@ -238,7 +238,7 @@ QFinal = cell(1,16);
     answer.Q = Q;
     answer.Error = errorVector;
     answer.FBS = FBS;
-    QFinal{fbsCount} = answer;
+    QFinal = answer;
     save(sprintf('Results/Rn1:%d,Real:%d.mat',fbsCount, NumRealization),'QFinal');
 % end
 % save(sprintf('Results/R3-MUE:%d,%d.mat',selectedMUE.X, selectedMUE.Y),'QFinal');
