@@ -43,8 +43,8 @@ function SINR = SINR_FUE(FBS, BS, sigma2, NumRealization)
             end
         end
         nom(1:NumRealization) = Pij(i,i).*hij(i,i,:);
-%         denom(1:NumRealization) = PBS(i,:)+P_interface+sigma;
-        denom(1:NumRealization) = P_interface+sigma;
+        denom(1:NumRealization) = PBS(i,:)+P_interface+sigma;
+%         denom(1:NumRealization) = P_interface+sigma;
         SINR(i) = sum(nom./denom)/NumRealization;
     end
 end
