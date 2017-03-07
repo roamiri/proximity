@@ -30,7 +30,7 @@ q_N = 3.76; q_M=12.5;
 % Actions
 actions = zeros(1,31);
 for i=1:31
-    actions(i) = -25 + (i-1) * 1.5; % dBm
+    actions(i) = Pmin + (i-1) * 1.5; % dBm
 end
 
 % States
@@ -48,7 +48,7 @@ mue(3) = UE(-200, 0);
 % selectedMUE = mue(mueNumber);
 BS = BaseStation(0 , 0 , 50);
 
-QFinal = cell(1,16);
+% QFinal = cell(1,16);
 % for fbsCount=1:16
     FBS = cell(1,fbsCount);
     
@@ -171,6 +171,14 @@ QFinal = cell(1,16);
 %         MUE_C(1,episode) = selectedMUE.C;
         xx(1,episode) = episode;
 %         R = K - (selectedMUE.SINR - sinr_th)^2;
+%             deviation_FUE=0.0;
+%             for i=1:size(FBS,2)
+%                 deviation_FUE = deviation_FUE + (fbs.C_FUE-q_M)^2;
+%             end
+        deviation_MUE = 0.0;
+        for i=1:size(mue,2)
+            deviation_MUE = deviation_MUE + (mue(i).C-q_N)^2;
+        end
         for j=1:size(FBS,2)
             fbs = FBS{j};
             qMax=max(Q,[],2);
@@ -186,11 +194,12 @@ QFinal = cell(1,16);
             end
             % CALCULATING NEXT STATE AND REWARD
             fbs = fbs.setCapacity(log2(1+SINR_FUE_Vec(j)));
-            deviation_MUE = 0;
-            for i=1:size(mue,1)
-                deviation_MUE = deviation_MUE + (mue(i).C-q_N)^2;
-            end
             R = K - deviation_MUE - (fbs.C_FUE-q_M)^2;
+%             beta = fbs.dMUE/dth;
+%             R = beta * fbs.C_FUE - (1/beta)*(deviation_MUE);
+            if R<0
+                R=0;
+            end
 %             if selectedMUE.C < gamma_th
 %                 I = 1;
 %                 R = k1(j)* fbs.C_FUE - (Kp/k1(j));
@@ -200,7 +209,7 @@ QFinal = cell(1,16);
 %             end
 
             for nextState=1:size(states,1)
-                if states(nextState) == fbs.state
+                if states(nextState,:) == fbs.state
                     Q(kk,jjj) = Q(kk,jjj) + alpha*(R+gamma*qMax(nextState)-Q(kk,jjj));
                 end
             end
