@@ -11,7 +11,7 @@ format short
 format compact
 
 %% Parameters
-Pmin = 0; %dBm
+Pmin = -20; %dBm
 Pmax = 25; %dBm
 Npower = 31;
 
@@ -42,8 +42,8 @@ Q1 = ones(size(states,1) , size(actions , 2)) * inf;
 
 alpha = 0.5; gamma = 0.9; epsilon = 0.1 ; Iterations = 50000;
 %% Generate the UEs
-mue(1) = UE(204, 207);
-mue(2) = UE(150, 150);
+% mue(1) = UE(204, 207);
+% mue(2) = UE(150, 150);
 mue(3) = UE(-200, 0);
 % selectedMUE = mue(mueNumber);
 BS = BaseStation(0 , 0 , 50);
@@ -248,7 +248,7 @@ BS = BaseStation(0 , 0 , 50);
     answer.Error = errorVector;
     answer.FBS = FBS;
     QFinal = answer;
-    save(sprintf('Results/Rn1:%d,Real:%d.mat',fbsCount, NumRealization),'QFinal');
+    save(sprintf('Results/chanlAlloc:%d,Real:%d.mat',fbsCount, NumRealization),'QFinal');
 % end
 % save(sprintf('Results/R3-MUE:%d,%d.mat',selectedMUE.X, selectedMUE.Y),'QFinal');
 
