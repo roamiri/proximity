@@ -2,7 +2,7 @@
 %                     Simulation of the paper:
 %   A proximity-based Q-Learning Reward Function for Femtocell Networks
 %
-function proximity_R3(mueNumber)
+function proximity_R3(mueNumber,fbsCount,NumRealization)
 
 %% Initialization
 % clear all;
@@ -46,36 +46,36 @@ selectedMUE = mue(mueNumber);
 BS = BaseStation(0 , 0 , 50);
 
 QFinal = cell(1,16);
-for fbsCount=1:16
+% for fbsCount=1:16
     FBS = cell(1,fbsCount);
     
     for i=1:3
         if i<= fbsCount
-            FBS{i} = FemtoStation(180+(i-1)*35,150, BS, selectedMUE, 10);
+            FBS{i} = FemtoStation_3S(180+(i-1)*35,150, BS, selectedMUE, 10);
         end
     end
 
     for i=1:3
         if i+3<= fbsCount
-            FBS{i+3} = FemtoStation(150+(i-1)*35,180, BS, selectedMUE, 10);
+            FBS{i+3} = FemtoStation_3S(150+(i-1)*35,180, BS, selectedMUE, 10);
         end
     end
 
     for i=1:4
         if i+6<= fbsCount
-            FBS{i+6} = FemtoStation(180+(i-1)*35,215, BS, selectedMUE, 10);
+            FBS{i+6} = FemtoStation_3S(180+(i-1)*35,215, BS, selectedMUE, 10);
         end
     end
 
     for i=1:3
         if i+10<= fbsCount
-            FBS{i+10} = FemtoStation(150+(i-1)*35,245, BS, selectedMUE, 10);
+            FBS{i+10} = FemtoStation_3S(150+(i-1)*35,245, BS, selectedMUE, 10);
         end
     end
 
     for i=1:3
         if i+13<= fbsCount
-            FBS{i+13} = FemtoStation(180+(i-1)*35,280, BS, selectedMUE, 10);
+            FBS{i+13} = FemtoStation_3S(180+(i-1)*35,280, BS, selectedMUE, 10);
         end
     end
 
@@ -155,8 +155,8 @@ for fbsCount=1:16
             end
         end 
 
-        SINR_FUE_Vec = SINR_FUE(FBS, BS, -120, 1e5);
-        selectedMUE.SINR = SINR_MUE_2(FBS, BS, selectedMUE, -120, 1e5);
+        SINR_FUE_Vec = SINR_FUE(FBS, BS, -120, NumRealization);
+        selectedMUE.SINR = SINR_MUE_2(FBS, BS, selectedMUE, -120, NumRealization);
         selectedMUE.C = log2(1+selectedMUE.SINR);
         MUE_C(1,episode) = selectedMUE.C;
         xx(1,episode) = episode;
@@ -175,7 +175,7 @@ for fbsCount=1:16
                 end
             end
             % CALCULATING NEXT STATE AND REWARD
-            fbs.C_FUE = log2(1+SINR_FUE_Vec(j));
+            fbs = fbs.setCapacity(log2(1+SINR_FUE_Vec(j)));
             if selectedMUE.C < gamma_th
                 I = 1;
                 R = k1(j)* fbs.C_FUE - (Kp/k1(j));
@@ -189,11 +189,12 @@ for fbsCount=1:16
                     Q(kk,jjj) = Q(kk,jjj) + alpha*(R+gamma*qMax(nextState)-Q(kk,jjj));
                 end
             end
+            FBS{j}=fbs;
         end
 
         % break if convergence: small deviation on q for 1000 consecutive
         errorVector(episode) =  sum(sum(abs(Q1-Q)));
-        if sum(sum(abs(Q1-Q)))<0.01 && sum(sum(Q >0))
+        if sum(sum(abs(Q1-Q)))<10 && sum(sum(Q >0))
             if count>1000
                 episode  % report last episode
                 break % for
@@ -221,9 +222,9 @@ for fbsCount=1:16
     answer.Q = Q;
     answer.Error = errorVector;
     answer.FBS = FBS;
-    QFinal{fbsCount} = answer;
-end
-save(sprintf('Results/R3-MUE:%d,%d.mat',selectedMUE.X, selectedMUE.Y),'QFinal');
+    QFinal = answer;
+% end
+save(sprintf('Results/R3-MUE:%d,%d.mat',fbsCount, NumRealization),'QFinal');
 
 end
 

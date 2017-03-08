@@ -30,21 +30,28 @@ function SINR = SINR_FUE(FBS, BS, sigma2, NumRealization)
         yAgent = FBS{i}.Y;
         for j=1:fbsNum
             d = sqrt((xAgent-FBS{j}.FUEX)^2+(yAgent-FBS{j}.FUEY)^2);
-            PL0 = 62.3+32*log10(d/5);
-            Pij(i,j) = 10^((pAgent-PL0-PLi-30)/10);
+            if i==j
+                PL0 = 62.3+40*log10(d/5);
+                Pij(i,j) = 10^((pAgent-PL0-30)/10);
+            else
+                PL0 = 62.3+32*log10(d/5);
+                Pij(i,j) = 10^((pAgent-PL0-PLi-30)/10);
+            end
+            
+            
         end
     end
     
     for i=1:fbsNum
         for j=1:fbsNum
             if i~=j
-                dum(1:NumRealization) = Pij(i,i).*hij(i,i,:);
+                dum(1:NumRealization) = Pij(i,j).*hij(i,j,:);
                 P_interface(1,:) = P_interface(1,:) + dum(1,:);
             end
         end
         nom(1:NumRealization) = Pij(i,i).*hij(i,i,:);
-%         denom(1:NumRealization) = PBS(i,:)+P_interface+sigma;
-        denom(1:NumRealization) = P_interface+sigma;
+        denom(1:NumRealization) = PBS(i,:)+P_interface+sigma;
+%         denom(1:NumRealization) = P_interface+sigma;
         SINR(i) = sum(nom./denom)/NumRealization;
     end
 end
