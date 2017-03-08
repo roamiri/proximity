@@ -2,7 +2,7 @@
 % Drawing Results for Rn1
 %
 % clear all;
-close all;
+% clear;
 % dirName = 'Results/1000,Rn1withoutBeta';
 % listing=dir(dirName);
 
