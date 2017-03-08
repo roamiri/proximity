@@ -249,7 +249,7 @@ BS = BaseStation(0 , 0 , 50);
     answer.Error = errorVector;
     answer.FBS = FBS;
     QFinal = answer;
-    save(sprintf('Results/Rn1WithoutBeta:%d,Real:%d.mat',fbsCount, NumRealization),'QFinal');
+    save(sprintf('Results/Rn1Beta:%d,Real:%d.mat',fbsCount, NumRealization),'QFinal');
 % end
 % save(sprintf('Results/R3-MUE:%d,%d.mat',selectedMUE.X, selectedMUE.Y),'QFinal');
 
