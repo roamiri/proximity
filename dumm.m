@@ -38,6 +38,10 @@ end
         C = FBS{1,j}.C_profile;
         c_fue{1,j} = [ c_fue{1,j} sum(C(40000:size(C,2)))/(-40000+size(C,2))];
     end
+    sum_CFUE = 0.0;
+    for i=1:size(FBS,2)
+        sum_CFUE = sum_CFUE + c_fue{1,j};
+    end
 % end
 
 % %%

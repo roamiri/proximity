@@ -1,8 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                     Main Loop Runner in parallel:
+%                     Main Loop Runner in parallel for proximity:
 %   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function sarsa(pref_poolSize,fbsCount,NumRealization)
+function proximity(pref_poolSize,fbsCount,NumRealization)
 
 % c = parcluster;
 % % poolobj = gcp('nocreate'); % If no pool, do not create new one.
@@ -17,6 +17,6 @@ function sarsa(pref_poolSize,fbsCount,NumRealization)
 
 parpool(pref_poolSize)
 parfor i=1:fbsCount
-    Rn1(i,NumRealization);
+    proximity_R3(3,i,NumRealization);
 end
 end

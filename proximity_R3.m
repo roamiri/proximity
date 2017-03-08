@@ -222,6 +222,22 @@ QFinal = cell(1,16);
     answer.Q = Q;
     answer.Error = errorVector;
     answer.FBS = FBS;
+    
+    %%
+    min_CFUE = -10;
+    for j=1:size(FBS,2)
+        C = FBS{1,j}.C_profile;
+        c_fue(1,j) = sum(C(40000:size(C,2)))/(-40000+size(C,2));
+        if min_CFUE > c_fue(1,j)
+            min_CFUE = c_fue(1,j);
+        end
+    end
+    sum_CFUE = 0.0;
+    for i=1:size(FBS,2)
+        sum_CFUE = sum_CFUE + c_fue(1,j);
+    end
+    answer.sum_CFUE = sum_CFUE;
+    answer.min_CFUE = min_CFUE;
     QFinal = answer;
 % end
 save(sprintf('Results/R3-MUE:%d,%d.mat',fbsCount, NumRealization),'QFinal');
