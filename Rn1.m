@@ -11,7 +11,7 @@ format short
 format compact
 
 %% Parameters
-Pmin = -20; %dBm
+Pmin = 0; %dBm
 Pmax = 25; %dBm
 Npower = 31;
 
