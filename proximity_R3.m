@@ -224,7 +224,7 @@ QFinal = cell(1,16);
     answer.FBS = FBS;
     
     %%
-    min_CFUE = -10;
+    min_CFUE = inf;
     for j=1:size(FBS,2)
         C = FBS{1,j}.C_profile;
         c_fue(1,j) = sum(C(40000:size(C,2)))/(-40000+size(C,2));
