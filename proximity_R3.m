@@ -156,7 +156,7 @@ QFinal = cell(1,16);
         end 
 
         SINR_FUE_Vec = SINR_FUE(FBS, BS, -120, NumRealization);
-        selectedMUE = selectedMUE.setCapacity(SINR_MUE_2(FBS, BS, selectedMUE, -120, NumRealization));
+        selectedMUE = selectedMUE.setCapacity(log2(1+SINR_MUE_2(FBS, BS, selectedMUE, -120, NumRealization)));
         MUE_C(1,episode) = selectedMUE.C;
         xx(1,episode) = episode;
 %         R = K - (selectedMUE.SINR - sinr_th)^2;

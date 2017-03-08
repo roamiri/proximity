@@ -194,8 +194,9 @@ BS = BaseStation(0 , 0 , 50);
             end
             % CALCULATING NEXT STATE AND REWARD
             fbs = fbs.setCapacity(log2(1+SINR_FUE_Vec(j)));
-            R = K - deviation_MUE - (fbs.C_FUE-q_M)^2;
-%             beta = fbs.dMUE/dth;
+%             R = K - deviation_MUE - (fbs.C_FUE-q_M)^2;
+            beta = fbs.dMUE/dth;
+              R = beta*K - deviation_MUE - (fbs.C_FUE-q_M)^2;
 %             R = beta * fbs.C_FUE - (1/beta)*(deviation_MUE);
             if R<0
                 R=0;
