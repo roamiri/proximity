@@ -44,7 +44,7 @@ alpha = 0.5; gamma = 0.9; epsilon = 0.1 ; Iterations = 50000;
 %% Generate the UEs
 % mue(1) = UE(204, 207);
 % mue(2) = UE(150, 150);
-mue(3) = UE(-200, 0);
+mue(1) = UE(-200, 0);
 % selectedMUE = mue(mueNumber);
 BS = BaseStation(0 , 0 , 50);
 
