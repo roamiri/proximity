@@ -156,8 +156,7 @@ QFinal = cell(1,16);
         end 
 
         SINR_FUE_Vec = SINR_FUE(FBS, BS, -120, NumRealization);
-        selectedMUE.SINR = SINR_MUE_2(FBS, BS, selectedMUE, -120, NumRealization);
-        selectedMUE.C = log2(1+selectedMUE.SINR);
+        selectedMUE = selectedMUE.setCapacity(SINR_MUE_2(FBS, BS, selectedMUE, -120, NumRealization));
         MUE_C(1,episode) = selectedMUE.C;
         xx(1,episode) = episode;
 %         R = K - (selectedMUE.SINR - sinr_th)^2;
@@ -218,6 +217,7 @@ QFinal = cell(1,16);
             FBS{j} = fbs;
         end
     end
+    answer.mue = selectedMUE;
     answer.C = sum(MUE_C(0.9*Iterations:Iterations))/(0.1*Iterations);
     answer.Q = Q;
     answer.Error = errorVector;
