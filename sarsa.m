@@ -17,6 +17,6 @@ function sarsa(pref_poolSize,fbsCount,NumRealization)
 
 parpool(pref_poolSize)
 parfor i=1:fbsCount
-    Rn1(i,NumRealization);
+    R_pi(i,NumRealization);
 end
 end
