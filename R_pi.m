@@ -60,31 +60,31 @@ BS = BaseStation(0 , 0 , 50);
 
     for i=1:3
         if i+3<= fbsCount
-            FBS{i+1} = FemtoStation(150+(i-1)*35,180, BS, mue, 10);
+            FBS{i+3} = FemtoStation(150+(i-1)*35,180, BS, mue, 10);
         end
     end
 
     for i=1:4
         if i+6<= fbsCount
-            FBS{i+2} = FemtoStation(180+(i-1)*35,215, BS, mue, 10);
+            FBS{i+6} = FemtoStation(180+(i-1)*35,215, BS, mue, 10);
         end
     end
 
     for i=1:3
         if i+10<= fbsCount
-            FBS{i+3} = FemtoStation(150+(i-1)*35,245, BS, mue, 10);
+            FBS{i+10} = FemtoStation(150+(i-1)*35,245, BS, mue, 10);
         end
     end
 
     for i=1:3
         if i+13<= fbsCount
-            FBS{i+4} = FemtoStation(180+(i-1)*35,280, BS, mue, 10);
+            FBS{i+13} = FemtoStation(180+(i-1)*35,280, BS, mue, 10);
         end
     end
 
     for i=1:3
         if i+16<= fbsCount
-            FBS{i+5} = FemtoStation(180+(i-1)*35,350, BS, mue, 10);
+            FBS{i+16} = FemtoStation(180+(i-1)*35,350, BS, mue, 10);
         end
     end
     %% Initialization and find MUE Capacity
