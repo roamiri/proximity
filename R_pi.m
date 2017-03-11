@@ -52,38 +52,38 @@ BS = BaseStation(0 , 0 , 50);
 % for fbsCount=1:16
     FBS = cell(1,fbsCount);
     
-    for i=1:1
+    for i=1:3
         if i<= fbsCount
             FBS{i} = FemtoStation(180+(i-1)*35,150, BS, mue, 10);
         end
     end
 
-    for i=1:1
-        if i+1<= fbsCount
-            FBS{i+1} = FemtoStation(150+(2-1)*35,180, BS, mue, 10);
-        end
-    end
-
-    for i=1:1
-        if i+2<= fbsCount
-            FBS{i+2} = FemtoStation(180+(2-1)*35,215, BS, mue, 10);
-        end
-    end
-
-    for i=1:1
+    for i=1:3
         if i+3<= fbsCount
-            FBS{i+3} = FemtoStation(150+(2-1)*35,245, BS, mue, 10);
+            FBS{i+1} = FemtoStation(150+(i-1)*35,180, BS, mue, 10);
         end
     end
 
-    for i=1:1
-        if i+4<= fbsCount
+    for i=1:4
+        if i+6<= fbsCount
+            FBS{i+2} = FemtoStation(180+(i-1)*35,215, BS, mue, 10);
+        end
+    end
+
+    for i=1:3
+        if i+10<= fbsCount
+            FBS{i+3} = FemtoStation(150+(i-1)*35,245, BS, mue, 10);
+        end
+    end
+
+    for i=1:3
+        if i+13<= fbsCount
             FBS{i+4} = FemtoStation(180+(i-1)*35,280, BS, mue, 10);
         end
     end
 
-    for i=1:1
-        if i+5<= fbsCount
+    for i=1:3
+        if i+16<= fbsCount
             FBS{i+5} = FemtoStation(180+(i-1)*35,350, BS, mue, 10);
         end
     end
@@ -192,7 +192,7 @@ BS = BaseStation(0 , 0 , 50);
             FBS{j}=fbs;
         end
         
-%         R = K - dum2*dum1;
+        R = K - dum2*dum1;
         for j=1:size(FBS,2)
             fbs = FBS{j};
             qMax=max(Q,[],2);
@@ -207,8 +207,8 @@ BS = BaseStation(0 , 0 , 50);
                 end
             end
             % CALCULATING NEXT STATE AND REWARD
-            beta = fbs.dMUE/dth;
-            R = beta*fbs.C_FUE - dum1*dum2;
+%             beta = fbs.dMUE/dth;
+%             R = beta*fbs.C_FUE - dum1*dum2;
             for nextState=1:size(states,1)
                 if states(nextState,:) == fbs.state
                     Q(kk,jjj) = Q(kk,jjj) + alpha*(R+gamma*qMax(nextState)-Q(kk,jjj));
@@ -263,7 +263,7 @@ BS = BaseStation(0 , 0 , 50);
     answer.sum_CFUE = sum_CFUE;
     answer.min_CFUE = min_CFUE;
     QFinal = answer;
-    save(sprintf('Results/R_pi6:%d,Real:%d.mat',fbsCount, NumRealization),'QFinal');
+    save(sprintf('myResults/R_pi_K:%d,Real:%d.mat',fbsCount, NumRealization),'QFinal');
 
 end
 
