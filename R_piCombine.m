@@ -263,7 +263,7 @@ BS = BaseStation(0 , 0 , 50);
     answer.sum_CFUE = sum_CFUE;
     answer.min_CFUE = min_CFUE;
     QFinal = answer;
-    save(sprintf('myResults/R_pi_beta:%d,Real:%d.mat',fbsCount, NumRealization),'QFinal');
+    save(sprintf('myResults/R_piCombine:%d,Real:%d.mat',fbsCount, NumRealization),'QFinal');
 
 end
 
