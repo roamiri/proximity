@@ -240,7 +240,7 @@ QFinal = cell(1,16);
     answer.min_CFUE = min_CFUE;
     QFinal = answer;
 % end
-save(sprintf('Results/R3-MUE:%d,%d.mat',fbsCount, NumRealization),'QFinal');
+save(sprintf('Compare/R3-MUE:%d,%d.mat',fbsCount, NumRealization),'QFinal');
 
 end
 
