@@ -1,4 +1,38 @@
 %%
+mue(1) = UE(204, 207);
+fbsCount = 16;
+FBS = cell(1,fbsCount);
+    
+    for i=1:3
+        if i<= fbsCount
+            FBS{i} = FemtoStation(180+(i-1)*35,150, BS, mue, 10);
+        end
+    end
+
+    for i=1:3
+        if i+3<= fbsCount
+            FBS{i+3} = FemtoStation(165+(i-1)*30,180, BS, mue, 10);
+        end
+    end
+
+    for i=1:4
+        if i+6<= fbsCount
+            FBS{i+6} = FemtoStation(150+(i-1)*35,200, BS, mue, 10);
+        end
+    end
+
+    for i=1:3
+        if i+10<= fbsCount
+            FBS{i+10} = FemtoStation(160+(i-1)*35,240, BS, mue, 10);
+        end
+    end
+
+    for i=1:3
+        if i+13<= fbsCount
+            FBS{i+13} = FemtoStation(150+(i-1)*35,280, BS, mue, 10);
+        end
+    end
+%%
 figure;
 hold on;
 grid on;
@@ -6,7 +40,7 @@ grid on;
 dM1 = 15; dM2 = 50; dM3 = 125; 
 dB1 = 50; dB2 = 150; dB3 = 400;
 BS = BaseStation(0 , 0 , 50);
-FBS = QFinal{16}.FBS;
+% FBS = QFinal.FBS;
 for i=1:16
     fbs = FBS{i};
     p = plot(fbs.X, fbs.Y, 'r');
@@ -25,6 +59,7 @@ p.Marker = 'diamond';
 circle(BS.X,BS.Y,dB1, 'b');
 circle(BS.X,BS.Y,dB2, 'b');
 circle(BS.X,BS.Y,dB3, 'b');
+% selectedMUE = QFinal.mue;
 selectedMUE.X = 204;
 selectedMUE.Y = 207;
 p = plot(selectedMUE.X, selectedMUE.Y, 'k');
@@ -40,6 +75,7 @@ circle(selectedMUE.X,selectedMUE.Y,dM3, 'r');
 title('System Model');
 xlabel('x position');
 ylabel('y position');
+% pbaspect([1 1 1])
 % 
 % text(-250, 270, 'd', 'Color', 'b');
 % text(-230, 270, 'BS');

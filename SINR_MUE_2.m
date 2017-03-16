@@ -25,4 +25,5 @@ function SINR = SINR_MUE_2(FBS, BS, mue, sigma2, NumRealization) % inputs are dB
             P_interf(j) = sum(p1.*h1mue(j));
         end
         SINR = sum((pbs.*hbs)./(P_interf+sigma))/NumRealization;
+%         SINR = sum((pbs.*hbs)./(sigma))/NumRealization;
 end

@@ -1,5 +1,5 @@
 clear;
-dirName = 'Compare/';
+dirName = 'Compare';
 listing=dir(dirName);
 
 R3 = [];    
@@ -7,9 +7,9 @@ for i=1:16
     s = sprintf('R3-MUE:%d,5000.mat',i);
     filename = strcat(dirName , '/', s);
     load(filename);
-    R3 = [R3 QFinal.min_CFUE];
+    R3 = [R3 QFinal.sum_CFUE];
 end
-comMinFUE.R3=R3;
+comSumFUE.R3=R3;
 %%
 dirName = 'Compare';
 listing=dir(dirName);
@@ -19,24 +19,24 @@ for i=1:16
     s = sprintf('R_piCombine:%d,Real:10000.mat',i);
     filename = strcat(dirName , '/', s);
     load(filename);
-    myCombine = [myCombine QFinal.min_CFUE];
+    myCombine = [myCombine QFinal.sum_CFUE];
 end
-comMinFUE.myCombine=myCombine;
+comSumFUE.myCombine=myCombine;
 %%
 dirName = 'myResults5_K';
 listing=dir(dirName);
 
-myBeta = [];    
+myK = [];    
 for i=1:16
     s = sprintf('R_pi_K:%d,Real:100000.mat',i);
     filename = strcat(dirName , '/', s);
     load(filename);
-    myBeta = [myBeta QFinal.min_CFUE];
+    myK = [myK QFinal.sum_CFUE];
 end
-comMinFUE.myK=myBeta;
+comSumFUE.myK=myK;
 
 %%
-dirName = 'myResults5_beta/';
+dirName = 'myResults5_beta';
 listing=dir(dirName);
 
 myBeta = [];    
@@ -44,9 +44,9 @@ for i=1:16
     s = sprintf('R_pi_beta:%d,Real:100000.mat',i);
     filename = strcat(dirName , '/', s);
     load(filename);
-    myBeta = [myBeta QFinal.min_CFUE];
+    myBeta = [myBeta QFinal.sum_CFUE];
 end
-comMinFUE.myBeta=myBeta;
+comSumFUE.myBeta=myBeta;
 %%
 dirName = 'Compare';
 listing=dir(dirName);
@@ -56,23 +56,23 @@ for i=1:16
     s = sprintf('upperBound:%d,Real:10000.mat',i);
     filename = strcat(dirName , '/', s);
     load(filename);
-    low = [low QFinal.min_CFUE];
+    low = [low QFinal.sum_CFUE];
 end
-comMinFUE.low=low;
+comSumFUE.low=low;
 %%
-save(sprintf('Compare/comMinFUE.mat'),'comMinFUE');
+save(sprintf('Compare/comSumFUE.mat'),'comSumFUE');
 %%
 figure;
 hold on;
 grid on;
 plot( ones(1,16)*1.25, '--k' );
-plot(comMinFUE.myK, '--*g');
-plot(comMinFUE.R3, '--*b');
-plot(comMinFUE.myBeta, '--*r');
-plot(comMinFUE.myCombine, '--*m');
-plot(comMinFUE.low, '--*c');
+plot(comSumFUE.myK, '--*g');
+plot(comSumFUE.R3, '--*b');
+plot(comSumFUE.myBeta, '--*r');
+plot(comSumFUE.myCombine, '--*m');
+plot(comSumFUE.low, '--*c');
 % title(fprintf('FUE Number %d', j));
 xlabel('FBS Numbers');
 ylabel('Capacity(b/s/HZ)');
 % saveas(gcf,sprintf('FUE_Number_%d.jpg', j))
-axis([0 16 0 10])
+% axis([0 16 0 10])
