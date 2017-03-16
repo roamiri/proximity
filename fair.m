@@ -51,33 +51,33 @@ BS = BaseStation(0 , 0 , 50);
 %Generate fbsCount=16 FBSs
 FBS_Max = cell(1,16);
 for i=1:3
-    if i<= fbsCount
+%     if i<= fbsCount
         FBS_Max{i} = FemtoStation(180+(i-1)*35,150, BS, mue, 10);
-    end
+%     end
 end
 
 for i=1:3
-    if i+3<= fbsCount
+%     if i+3<= fbsCount
         FBS_Max{i+3} = FemtoStation(165+(i-1)*30,180, BS, mue, 10);
-    end
+%     end
 end
 
 for i=1:4
-    if i+6<= fbsCount
+%     if i+6<= fbsCount
         FBS_Max{i+6} = FemtoStation(150+(i-1)*35,200, BS, mue, 10);
-    end
+%     end
 end
 
 for i=1:3
-    if i+10<= fbsCount
+%     if i+10<= fbsCount
         FBS_Max{i+10} = FemtoStation(160+(i-1)*35,240, BS, mue, 10);
-    end
+%     end
 end
 
 for i=1:3
-    if i+13<= fbsCount
+%     if i+13<= fbsCount
         FBS_Max{i+13} = FemtoStation(150+(i-1)*35,280, BS, mue, 10);
-    end
+%     end
 end
 %%
 % 
