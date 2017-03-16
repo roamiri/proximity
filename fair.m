@@ -49,7 +49,7 @@ mue(1) = UE(204, 207);
 BS = BaseStation(0 , 0 , 50);
 %%
 %Generate fbsCount=16 FBSs
-FBS_Max = cell(1,fbsCount);
+FBS_Max = cell(1,16);
 for i=1:3
     if i<= fbsCount
         FBS_Max{i} = FemtoStation(180+(i-1)*35,150, BS, mue, 10);
