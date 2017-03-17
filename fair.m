@@ -227,7 +227,7 @@ if fbsCount>=16, FBS{16} = FBS_Max{13}; end
                     Q(kk,jjj) = Q(kk,jjj) + alpha*(R+gamma*qMax(nextState)-Q(kk,jjj));
                 end
             end
-            FBS{j}=fbs;q_N
+            FBS{j}=fbs;
         end
 
         % break if convergence: small deviation on q for 1000 consecutive
