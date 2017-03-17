@@ -36,12 +36,12 @@ end
 comMinFUE.myK=myBeta;
 
 %%
-dirName = 'myResults5_beta/';
+dirName = 'fairResults';
 listing=dir(dirName);
 
 myBeta = [];    
 for i=1:16
-    s = sprintf('R_pi_beta:%d,Real:100000.mat',i);
+    s = sprintf('R_pi_beta2:%d,Real:5000.mat',i);
     filename = strcat(dirName , '/', s);
     load(filename);
     myBeta = [myBeta QFinal.min_CFUE];
@@ -66,11 +66,11 @@ figure;
 hold on;
 grid on;
 plot( ones(1,16)*1.25, '--k' );
-plot(comMinFUE.myK, '--*g');
+% plot(comMinFUE.myK, '--*g');
 plot(comMinFUE.R3, '--*b');
 plot(comMinFUE.myBeta, '--*r');
-plot(comMinFUE.myCombine, '--*m');
-plot(comMinFUE.low, '--*c');
+% plot(comMinFUE.myCombine, '--*m');
+% plot(comMinFUE.low, '--*c');
 % title(fprintf('FUE Number %d', j));
 xlabel('FBS Numbers');
 ylabel('Capacity(b/s/HZ)');

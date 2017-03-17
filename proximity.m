@@ -6,6 +6,6 @@ function proximity(pref_poolSize,fbsCount,NumRealization)
 
 parpool(pref_poolSize)
 parfor i=1:fbsCount
-    upperBound(i,NumRealization);
+    fair(i,NumRealization);
 end
 end

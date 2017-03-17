@@ -2,7 +2,7 @@
 %                     Simulation of Rn1:
 %   
 %
-function fair(fbsCount, NumRealization)
+function Q = fair_Shared(fbsCount, NumRealization, QTable)
 
 %% Initialization
 % clear all;
@@ -25,7 +25,7 @@ sinr_th = 1.64;%10^(2/10); % I am not sure if it is 2 or 20!!!!!
 gamma_th = log2(1+sinr_th);
 %% Minimum Rate Requirements for N MUE users
 N = 3;
-q_N = 1.00; q_M=1.00;
+q_N = 1.4005; q_M=1.25;
 %% Q-Learning variables
 % Actions
 actions = zeros(1,31);
@@ -37,7 +37,7 @@ end
 states = allcomb(0:3 , 0:3); % states = (dMUE , dBS)
 
 % Q-Table
-Q = zeros(size(states,1) , size(actions , 2));
+% Q = zeros(size(states,1) , size(actions , 2));
 Q1 = ones(size(states,1) , size(actions , 2)) * inf;
 
 alpha = 0.5; gamma = 0.9; epsilon = 0.1 ; Iterations = 50000;
@@ -157,7 +157,7 @@ if fbsCount>=16, FBS{16} = FBS_Max{13}; end
                             break;
                         end
                     end
-                    [M, index] = max(Q(kk,:));
+                    [M, index] = max(QTable(kk,:));
                     fbs = fbs.setPower(actions(index));
                     FBS{j} = fbs;
                 end
@@ -170,7 +170,7 @@ if fbsCount>=16, FBS{16} = FBS_Max{13}; end
                         break;
                     end
                 end
-                [M, index] = max(Q(kk,:));
+                [M, index] = max(QTable(kk,:));
                 fbs = fbs.setPower(actions(index));
                 FBS{j} = fbs;
             end
@@ -208,7 +208,7 @@ if fbsCount>=16, FBS{16} = FBS_Max{13}; end
 %         R = K - dum2*dum1;
         for j=1:size(FBS,2)
             fbs = FBS{j};
-            qMax=max(Q,[],2);
+            qMax=max(QTable,[],2);
             for jjj = 1:31
                 if actions(1,jjj) == fbs.P
                     break;
@@ -224,15 +224,15 @@ if fbsCount>=16, FBS{16} = FBS_Max{13}; end
             R = beta*fbs.C_FUE - (1/beta)*dum1*dum2;
             for nextState=1:size(states,1)
                 if states(nextState,:) == fbs.state
-                    Q(kk,jjj) = Q(kk,jjj) + alpha*(R+gamma*qMax(nextState)-Q(kk,jjj));
+                    QTable(kk,jjj) = QTable(kk,jjj) + alpha*(R+gamma*qMax(nextState)-QTable(kk,jjj));
                 end
             end
-            FBS{j}=fbs;q_N
+            FBS{j}=fbs;
         end
 
         % break if convergence: small deviation on q for 1000 consecutive
-        errorVector(episode) =  sum(sum(abs(Q1-Q)));
-        if sum(sum(abs(Q1-Q)))<1 && sum(sum(Q >0))
+        errorVector(episode) =  sum(sum(abs(Q1-QTable)));
+        if sum(sum(abs(Q1-QTable)))<1 && sum(sum(QTable >0))
             if count>1000
                 episode  % report last episode
                 break % for
@@ -240,7 +240,7 @@ if fbsCount>=16, FBS{16} = FBS_Max{13}; end
                 count=count+1; % set counter if deviation of q is small
             end
         else
-            Q1=Q;
+            Q1=QTable;
             count=0;  % reset counter when deviation of q from previous q is large
         end
 
@@ -256,8 +256,9 @@ if fbsCount>=16, FBS{16} = FBS_Max{13}; end
 %             FBS{j} = fbs;
 %         end
     end
+    Q = QTable;
     answer.mue = mue;
-    answer.Q = Q;
+    answer.Q = QTable;
     answer.Error = errorVector;
     answer.FBS = FBS;
     min_CFUE = inf;
@@ -276,7 +277,7 @@ if fbsCount>=16, FBS{16} = FBS_Max{13}; end
     answer.sum_CFUE = sum_CFUE;
     answer.min_CFUE = min_CFUE;
     QFinal = answer;
-    save(sprintf('fairResults/R_pi_beta:%d,Real:%d,thresh:1.00.mat',fbsCount, NumRealization),'QFinal');
+    save(sprintf('fairResults/R_share_beta2:%d,Real:%d.mat',fbsCount, NumRealization),'QFinal');
 
 end
 
