@@ -2,7 +2,7 @@
 mue(1) = UE(204, 207);
 fbsCount = 16;
 FBS = cell(1,fbsCount);
-    
+BS = BaseStation(0 , 0 , 50);    
     for i=1:3
         if i<= fbsCount
             FBS{i} = FemtoStation(180+(i-1)*35,150, BS, mue, 10);
@@ -41,7 +41,12 @@ dM1 = 15; dM2 = 50; dM3 = 125;
 dB1 = 50; dB2 = 150; dB3 = 400;
 BS = BaseStation(0 , 0 , 50);
 % FBS = QFinal.FBS;
-for i=1:16
+fbs = FBS{1};
+p1 = plot(fbs.X, fbs.Y, 'r');
+p1.Marker = '*';
+p2 = plot(fbs.X, fbs.Y+10, 'k');
+p2.Marker = 'x';
+for i=2:16
     fbs = FBS{i};
     p = plot(fbs.X, fbs.Y, 'r');
     p.Marker = '*';
@@ -54,20 +59,20 @@ for i=1:16
 end
 axis([-300,350,-100,350]);
 
-p = plot(BS.X, BS.Y, 'b');
-p.Marker = 'diamond';
+p3 = plot(BS.X, BS.Y, 'b');
+p3.Marker = 'diamond';
 circle(BS.X,BS.Y,dB1, 'b');
 circle(BS.X,BS.Y,dB2, 'b');
 circle(BS.X,BS.Y,dB3, 'b');
 % selectedMUE = QFinal.mue;
 selectedMUE.X = 204;
 selectedMUE.Y = 207;
-p = plot(selectedMUE.X, selectedMUE.Y, 'k');
-p1 = plot(150, 150, 'k');
-p2 = plot(-200, 0, 'k');
-p.Marker = 'square';
-p1.Marker = 'square';
-p2.Marker = 'square';
+p4 = plot(selectedMUE.X, selectedMUE.Y, 'k');
+% p1 = plot(150, 150, 'k');
+p5 = plot(-200, 0, 'k');
+p5.Marker = 'square';
+% p1.Marker = 'square';
+p4.Marker = 'square';
 circle(selectedMUE.X,selectedMUE.Y,dM1, 'r');
 circle(selectedMUE.X,selectedMUE.Y,dM2, 'r');
 circle(selectedMUE.X,selectedMUE.Y,dM3, 'r');
@@ -75,6 +80,7 @@ circle(selectedMUE.X,selectedMUE.Y,dM3, 'r');
 title('System Model');
 xlabel('x position');
 ylabel('y position');
+legend([p3 p1 p2 p4],{'BS','FBS', 'FUE', 'MUE'})
 % pbaspect([1 1 1])
 % 
 % text(-250, 270, 'd', 'Color', 'b');
@@ -89,7 +95,7 @@ ylabel('y position');
 % text(-250, 210, 's', 'Color', 'r');
 % text(-230, 210, 'MUE');
 
-ht = text(-230, 270, {'{\color{blue} d } BS', '{\color{red} * } FBS', '{\color{black} x } FUE' , '{\color{black} s } MUE'}, 'EdgeColor', 'k');
+% ht = text(-230, 270, {'{\color{blue} d } BS', '{\color{red} * } FBS', '{\color{black} x } FUE' , '{\color{black} s } MUE'}, 'EdgeColor', 'k');
 % ht = text(-230, 270, {'{\color{blue} d } BS', '{\color{red} * } FBS','{\color{black} s } MUE'}, 'EdgeColor', 'k');
 
 function h = circle(x,y,r, color)

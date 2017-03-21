@@ -42,9 +42,9 @@ Q1 = ones(size(states,1) , size(actions , 2)) * inf;
 
 alpha = 0.5; gamma = 0.9; epsilon = 0.1 ; Iterations = 50000;
 %% Generate the UEs
-mue(1) = UE(204, 207);
-% mue(2) = UE(150, 150);
-% mue(1) = UE(-200, 0);
+% mue(1) = UE(204, 207);
+% mue(1) = UE(150, 150);
+mue(1) = UE(-200, 0);
 % selectedMUE = mue(mueNumber);
 BS = BaseStation(0 , 0 , 50);
 %%
@@ -277,7 +277,7 @@ if fbsCount>=16, FBS{16} = FBS_Max{13}; end
     answer.sum_CFUE = sum_CFUE;
     answer.min_CFUE = min_CFUE;
     QFinal = answer;
-    save(sprintf('fairResults/R_share_beta2:%d,Real:%d.mat',fbsCount, NumRealization),'QFinal');
+    save(sprintf('final_3/R_share_beta:%d,Real:%d.mat',fbsCount, NumRealization),'QFinal');
 
 end
 

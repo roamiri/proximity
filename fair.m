@@ -25,7 +25,7 @@ sinr_th = 1.64;%10^(2/10); % I am not sure if it is 2 or 20!!!!!
 gamma_th = log2(1+sinr_th);
 %% Minimum Rate Requirements for N MUE users
 N = 3;
-q_N = 1.00; q_M=1.00;
+q_N = 1.4005; q_M=1.2500;
 %% Q-Learning variables
 % Actions
 actions = zeros(1,31);
@@ -276,7 +276,7 @@ if fbsCount>=16, FBS{16} = FBS_Max{13}; end
     answer.sum_CFUE = sum_CFUE;
     answer.min_CFUE = min_CFUE;
     QFinal = answer;
-    save(sprintf('fairResults/R_pi_beta:%d,Real:%d,thresh:1.00.mat',fbsCount, NumRealization),'QFinal');
+    save(sprintf('fairResults/R_pi_beta:%d,Real:%d',fbsCount, NumRealization),'QFinal');
 
 end
 

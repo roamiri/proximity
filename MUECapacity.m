@@ -1,39 +1,54 @@
 % clear;
-dirName = 'Compare';
+dirName = 'final_3';
 listing=dir(dirName);
 
 
-b = [];    
+R3 = [];    
 for i=1:16
-    s = sprintf('R3-MUE:%d,5000.mat',i);
+    s = sprintf('R3-shared:%d,5000.mat',i);
     filename = strcat(dirName , '/', s);
     load(filename);
     C = QFinal.mue.C_profile;
     cc = sum(C(40000:size(C,2)))/(-40000+size(C,2));
-    b = [b cc];
+    R3 = [R3 cc];
 end
 
+%%
+dirName = 'final_3';
+listing=dir(dirName);
+
+
+mine = [];    
+for i=1:16
+    s = sprintf('R_share_beta:%d,Real:5000.mat',i);
+    filename = strcat(dirName , '/', s);
+    load(filename);
+    C = QFinal.mue.C_profile;
+    cc = sum(C(40000:size(C,2)))/(-40000+size(C,2));
+    mine = [mine cc];
+end
 %%
 dirName = 'fairResults';
 listing=dir(dirName);
 
 
-a = [];    
-for i=1:16
-    s = sprintf('R_pi_beta2:%d,Real:5000.mat',i);
+e = [];    
+for i=1:15
+    s = sprintf('R_share_beta2:%d,Real:1000.mat',i);
     filename = strcat(dirName , '/', s);
     load(filename);
     C = QFinal.mue.C_profile;
     cc = sum(C(40000:size(C,2)))/(-40000+size(C,2));
-    a = [a cc];
+    e = [e cc];
 end
-
-% figure;
+%%
+figure;
 hold on;
 grid on;
 plot( ones(1,16)*1.4005, '--k' );
-plot(a, '--*r');
-plot(b, '--*b');
+% plot(e, '--*g');
+plot(mine, '--*r');
+plot(R3, '--*b');
 % title(fprintf('FUE Number %d', j));
 xlabel('FBS Numbers');
 ylabel('Capacity(b/s/HZ)');
