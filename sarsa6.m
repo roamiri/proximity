@@ -12,7 +12,7 @@ Q = zeros(size(states,1) , size(actions , 2));
 Q_ans = zeros(size(states,1) , size(actions , 2));
 % parpool(pref_poolSize)
 for i=1:fbsCount
-    Q_ans = R_NopunishL2_2(i,NumRealization, Q);
+    Q_ans = R_NopunishL1_2_SINR3(i,NumRealization, Q);
     Q = Q_ans;
 end
 end

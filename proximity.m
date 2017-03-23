@@ -2,7 +2,7 @@
 %                     Main Loop Runner in for proximity:
 %   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function proximity(fbsCount,NumRealization)
+function proximity(mueLocation,fbsCount,NumRealization)
 
 actions = zeros(1,31);
 % States
@@ -13,7 +13,7 @@ Q = zeros(size(states,1) , size(actions , 2));
 Q_ans = zeros(size(states,1) , size(actions , 2));
 
 for i=1:fbsCount
-    Q_ans = fair_R3(3,i,NumRealization, Q);
+    Q_ans = fair_R3(mueLocation,i,NumRealization, Q);
     Q = Q_ans;
 end
 end

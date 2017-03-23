@@ -1,4 +1,4 @@
-clear;
+% clear;
 dirName = 'final_3';
 listing=dir(dirName);
 
@@ -20,12 +20,12 @@ for i=1:16
 end
 comSumFUE.R3=R3;
 %%
-dirName = 'final_3';
+dirName = 'test_L1_SINR3';
 listing=dir(dirName);
 
 share = [];    
 for i=1:16
-    s = sprintf('R_share_beta:%d,Real:5000.mat',i);
+    s = sprintf('R_nopunish_2:%d,Real:100',i);
     filename = strcat(dirName , '/', s);
     load(filename);
     share = [share QFinal.sum_CFUE];
@@ -33,43 +33,45 @@ end
 comSumFUE.share=share;
 
 %%
-dirName = 'fairResults';
-listing=dir(dirName);
-
-myBeta = [];    
-for i=1:16
-    s = sprintf('R_pi_beta2:%d,Real:5000.mat',i);
-    filename = strcat(dirName , '/', s);
-    load(filename);
-    myBeta = [myBeta QFinal.sum_CFUE];
-end
-comSumFUE.myBeta=myBeta;
+% dirName = 'nopunish_3';
+% listing=dir(dirName);
+% 
+% myBeta = [];    
+% for i=1:16
+%     s = sprintf('R_nopunish_2:%d,Real:5000',i);
+%     filename = strcat(dirName , '/', s);
+%     load(filename);
+%     myBeta = [myBeta QFinal.sum_CFUE];
+% end
+% comSumFUE.myBeta=myBeta;
 %%
-dirName = 'fairResults';
-listing=dir(dirName);
-
-thresh = [];    
-for i=1:16
-    s = sprintf('R_pi_beta:%d,Real:1000,thresh:1.00.mat',i);
-    filename = strcat(dirName , '/', s);
-    load(filename);
-    thresh = [thresh QFinal.sum_CFUE];
-end
-comSumFUE.thresh=thresh;
+% dirName = 'fairResults';
+% listing=dir(dirName);
+% 
+% thresh = [];    
+% for i=1:16
+%     s = sprintf('R_pi_beta:%d,Real:1000,thresh:1.00.mat',i);
+%     filename = strcat(dirName , '/', s);
+%     load(filename);
+%     thresh = [thresh QFinal.sum_CFUE];
+% end
+% comSumFUE.thresh=thresh;
 %%
-save(sprintf('Compare/comSumFUE.mat'),'comSumFUE');
+% save(sprintf('Compare/comSumFUE.mat'),'comSumFUE');
 %%
 figure;
 hold on;
 grid on;
+box on;
 % plot( ones(1,16)*1.25, '--k' );
-plot(share, '--*r');
-plot(R3, '--*b');
-% plot(comSumFUE.myBeta, '--*r');
+plot(share, '--*r', 'LineWidth',1,'MarkerSize',10);
+plot(R3, '--sb', 'LineWidth',1,'MarkerSize',10);
+% plot(comSumFUE.myBeta, '--*g');
 % plot(comSumFUE.myCombine, '--*m');
 % plot(comSumFUE.thresh, '--*c');
-% title(fprintf('FUE Number %d', j));
-xlabel('FBS Numbers');
-ylabel('Capacity(b/s/HZ)');
+title('Sum capacity of FUEs','FontSize',14, 'FontWeight','bold');
+xlabel('FBS Numbers','FontSize',14, 'FontWeight','bold');
+ylabel('Capacity(b/s/HZ)','FontSize',14, 'FontWeight','bold');
+legend({'RF1','RF2'},'FontSize',14, 'FontWeight','bold');
 % saveas(gcf,sprintf('FUE_Number_%d.jpg', j))
-% axis([0 16 0 10])
+axis([0 16 0 35])

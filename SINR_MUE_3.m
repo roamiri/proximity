@@ -1,9 +1,13 @@
-function SINR = SINR_MUE_2(FBS, BS, mue, sigma2, NumRealization) % inputs are dBm, output is not db
-    % compute power of signal at UE received from BS
-        d = sqrt((BS.X-mue.X)^2+(BS.Y-mue.Y)^2);
+function SINR = SINR_MUE_3(FBS, BS, mue, sigma2, NumRealization) % inputs are dBm, output is not db
+    % compute power of signal at UE received from BS        
+        x1 = 20 * randn(1,NumRealization);
+        x2 = 20 * randn(1,NumRealization);
+        xx = mue.X+x1;
+        yy = mue.Y+x2;
+        d = sqrt((BS.X-xx).^2+(BS.Y-yy).^2);
         PL_BS = 62.3+40*log10(d/5);
         H = abs((1/sqrt(2)) * (randn(1,NumRealization)+1i*randn(1,NumRealization)));
-        pbs = 10^((BS.P-PL_BS-30)/10);
+        pbs = 10.^((BS.P-PL_BS-30)/10);
         hbs = H.^2;
         
         % compute power of interference at UE received from Femtocells
@@ -15,14 +19,14 @@ function SINR = SINR_MUE_2(FBS, BS, mue, sigma2, NumRealization) % inputs are dB
         sigma = 10^((sigma2-30)/10);
         for i=1:size(FBS,2)    
             pAgent = FBS{i}.P;
-            d = sqrt((FBS{i}.X-mue.X)^2+(FBS{i}.Y-mue.Y)^2);
-            PL0 = 62.3+32*log10(d/5);
+            d = sqrt((FBS{i}.X-xx).^2+(FBS{i}.Y-yy).^2);
+            PL0 = 62.3+32.*log10(d/5);
             PL_FB = PL0 + PLi;
-            p1(i,1) = 10^((pAgent-PL_FB-30)/10);
+            p1(i,:) = 10.^((pAgent-PL_FB-30)/10);
         end
-        pRep = repmat(p1,1,NumRealization);
+    
 %         for j=1:NumRealization
-            P_interf = sum(pRep.*h1mue,1);
+            P_interf = sum(p1.*h1mue,1);
 %         end
         SINR = sum((pbs.*hbs)./(P_interf+sigma))/NumRealization;
 %         SINR = sum((pbs.*hbs)./(sigma))/NumRealization;
