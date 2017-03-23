@@ -1,11 +1,11 @@
 % clear;
-dirName = 'final';
+dirName = 'R3';
 listing=dir(dirName);
 
 
 R3 = [];    
 for i=1:16
-    s = sprintf('R3-shared:%d,5000.mat',i);
+    s = sprintf('R3-shared:3,%d,5000.mat',i);
     filename = strcat(dirName , '/', s);
     load(filename);
     C = QFinal.mue.C_profile;
@@ -14,13 +14,13 @@ for i=1:16
 end
 
 %%
-dirName = 'test_L1_SINR3';
+dirName = 'nopunish';
 listing=dir(dirName);
 
 
 mine = [];    
 for i=1:16
-    s = sprintf('R_nopunish_2:%d,Real:100',i);
+    s = sprintf('R_nopunish_mix_L:3,%d,Real:1000',i);
     filename = strcat(dirName , '/', s);
     load(filename);
     C = QFinal.mue.C_profile;

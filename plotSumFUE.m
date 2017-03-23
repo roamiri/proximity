@@ -1,10 +1,10 @@
 % clear;
-dirName = 'final_3';
+dirName = 'R3';
 listing=dir(dirName);
 
 R3 = [];    
 for i=1:16
-    s = sprintf('R3-shared:%d,5000.mat',i);
+    s = sprintf('R3-shared:3,%d,5000.mat',i);
     filename = strcat(dirName , '/', s);
     load(filename);
     
@@ -20,12 +20,12 @@ for i=1:16
 end
 comSumFUE.R3=R3;
 %%
-dirName = 'test_L1_SINR3';
+dirName = 'nopunish';
 listing=dir(dirName);
 
 share = [];    
 for i=1:16
-    s = sprintf('R_nopunish_2:%d,Real:100',i);
+    s = sprintf('R_nopunish_mix_L:3,%d,Real:1000',i);
     filename = strcat(dirName , '/', s);
     load(filename);
     share = [share QFinal.sum_CFUE];

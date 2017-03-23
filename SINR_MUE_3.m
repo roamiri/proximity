@@ -1,7 +1,7 @@
 function SINR = SINR_MUE_3(FBS, BS, mue, sigma2, NumRealization) % inputs are dBm, output is not db
     % compute power of signal at UE received from BS        
-        x1 = 20 * randn(1,NumRealization);
-        x2 = 20 * randn(1,NumRealization);
+        x1 = 10 * randn(1,NumRealization);
+        x2 = 10 * randn(1,NumRealization);
         xx = mue.X+x1;
         yy = mue.Y+x2;
         d = sqrt((BS.X-xx).^2+(BS.Y-yy).^2);

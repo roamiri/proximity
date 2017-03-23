@@ -1,10 +1,10 @@
 clear;
-dirName = 'final';
+dirName = 'R3';
 listing=dir(dirName);
 
 R3 = [];    
 for i=1:16
-    s = sprintf('R3-shared:%d,5000.mat',i);
+    s = sprintf('R3-shared:3,%d,5000.mat',i);
     filename = strcat(dirName , '/', s);
     load(filename);
     R3 = [R3 QFinal.min_CFUE];
@@ -23,12 +23,12 @@ comMinFUE.R3=R3;
 % end
 % comMinFUE.myCombine=myCombine;
 %%
-dirName = 'test_L1_SINR3';
+dirName = 'nopunish';
 listing=dir(dirName);
 
 share = [];    
 for i=1:16
-    s = sprintf('R_nopunish_2:%d,Real:100',i);
+    s = sprintf('R_nopunish_mix_L:3,%d,Real:1000',i);
     filename = strcat(dirName , '/', s);
     load(filename);
     share = [share QFinal.min_CFUE];
@@ -77,4 +77,4 @@ xlabel('FBS Numbers','FontSize',14, 'FontWeight','bold');
 ylabel('Capacity(b/s/HZ)','FontSize',14, 'FontWeight','bold');
 legend({'threshold','RF1','RF2'},'FontSize',14, 'FontWeight','bold');
 % saveas(gcf,sprintf('FUE_Number_%d.jpg', j))
-% axis([0 16 0 10])
+axis([4 16 0 4])
