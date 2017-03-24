@@ -2,7 +2,7 @@
 %                     Simulation of Rn1:
 %   
 %
-function Q = fair_Shared(fbsCount, NumRealization, QTable)
+function Q = fair_Shared(mueLocation, fbsCount, NumRealization, QTable)
 
 %% Initialization
 % clear all;
@@ -42,9 +42,10 @@ Q1 = ones(size(states,1) , size(actions , 2)) * inf;
 
 alpha = 0.5; gamma = 0.9; epsilon = 0.1 ; Iterations = 50000;
 %% Generate the UEs
-% mue(1) = UE(204, 207);
-% mue(1) = UE(150, 150);
-mue(1) = UE(-200, 0);
+Smue(1) = UE(204, 207);
+Smue(2) = UE(150, 150);
+Smue(3) = UE(-200, 0);
+mue = Smue(mueLocation);
 % selectedMUE = mue(mueNumber);
 BS = BaseStation(0 , 0 , 50);
 %%
@@ -181,7 +182,7 @@ if fbsCount>=16, FBS{16} = FBS_Max{13}; end
         C_FUE_Vec = log2(1+SINR_FUE_Vec);
         for i=1:size(mue,2)
             MUE = mue(i);
-            MUE.SINR = SINR_MUE_2(FBS, BS, MUE, -120, NumRealization);
+            MUE.SINR = SINR_MUE_3(FBS, BS, MUE, -120, NumRealization);
             MUE = MUE.setCapacity(log2(1+MUE.SINR));
             mue(i)=MUE;
         end
@@ -277,7 +278,7 @@ if fbsCount>=16, FBS{16} = FBS_Max{13}; end
     answer.sum_CFUE = sum_CFUE;
     answer.min_CFUE = min_CFUE;
     QFinal = answer;
-    save(sprintf('final_3/R_share_beta:%d,Real:%d.mat',fbsCount, NumRealization),'QFinal');
+    save(sprintf('final/R_share_beta_L:%d,%d,Real:%d.mat',mueLocation,fbsCount, NumRealization),'QFinal');
 
 end
 
