@@ -10,8 +10,10 @@ classdef FemtoStation
       FUEY
       M  % distance with MUE
       B  % distance with BS
-      dM1 = 15; dM2 = 50; dM3 = 125; 
+      dM1 = 15; dM2 = 50; dM3 = 125;
+%       dM1 = 500; dM2 = 520; dM3 = 530;
       dB1 = 50; dB2 = 150; dB3 = 400;
+%       dB1 = 150; dB2 = 200; dB3 = 300;
       state = zeros(1,2)
       powerProfile = []
       C_FUE
