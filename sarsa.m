@@ -13,7 +13,7 @@ Q_ans = zeros(size(states,1) , size(actions , 2));
 % parpool(pref_poolSize)
 for i=1:fbsCount
 %     Q_ans = fair_R3(mueLocation,i,NumRealization, Q);
-    Q_ans = fair_Shared(i,NumRealization, Q);
+    Q_ans = fair_Shared(mueLocation,i,NumRealization, Q);
     Q = Q_ans;
 end
 end
