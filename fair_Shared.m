@@ -18,14 +18,14 @@ Npower = 31;
 dth = 25;
 Kp = 100; % penalty constant for MUE capacity threshold
 Gmue = 1.37; % bps/Hz
-StepSize = 1.5; % dBm
+StepSize = 1.5; % dB
 K = 1000;
 PBS = 50 ; %dBm
 sinr_th = 1.64;%10^(2/10); % I am not sure if it is 2 or 20!!!!!
 gamma_th = log2(1+sinr_th);
 %% Minimum Rate Requirements for N MUE users
 N = 3;
-q_N = 1.4005; q_M=1.25;
+q_N = 4.0; q_M=4.0;
 %% Q-Learning variables
 % Actions
 actions = zeros(1,31);
@@ -277,7 +277,7 @@ if fbsCount>=16, FBS{16} = FBS_Max{13}; end
     answer.sum_CFUE = sum_CFUE;
     answer.min_CFUE = min_CFUE;
     QFinal = answer;
-    save(sprintf('final_3/R_share_beta:%d,Real:%d.mat',fbsCount, NumRealization),'QFinal');
+%     save(sprintf('final_3/R_share_beta:%d,Real:%d.mat',fbsCount, NumRealization),'QFinal');
 
 end
 
