@@ -38,7 +38,8 @@ hold on;
 grid on;
 
 dM1 = 15; dM2 = 50; dM3 = 125; 
-dB1 = 50; dB2 = 150; dB3 = 400;
+% dB1 = 50; dB2 = 150; dB3 = 400;
+dB1 = 250; dB2 = 300; dB3 = 350;
 BS = BaseStation(0 , 0 , 50);
 % FBS = QFinal.FBS;
 fbs = FBS{1};
@@ -77,10 +78,11 @@ circle(selectedMUE.X,selectedMUE.Y,dM1, 'r');
 circle(selectedMUE.X,selectedMUE.Y,dM2, 'r');
 circle(selectedMUE.X,selectedMUE.Y,dM3, 'r');
 
-title('System Model');
-xlabel('x position');
-ylabel('y position');
-legend([p3 p1 p2 p4],{'BS','FBS', 'FUE', 'MUE'})
+title('System Model','FontSize',14, 'FontWeight','bold');
+xlabel('x position','FontSize',14, 'FontWeight','bold');
+ylabel('y position','FontSize',14, 'FontWeight','bold');
+legend([p3 p1 p2 p4],{'BS','FBS', 'FUE', 'MUE'});
+box on;
 % pbaspect([1 1 1])
 % 
 % text(-250, 270, 'd', 'Color', 'b');

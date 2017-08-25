@@ -5,13 +5,12 @@ clc;
 dirName = 'R_1';
 listing=dir(dirName);
 
-
 MUE_C = [];    
 min_FUE = [];
 sum_FUE = [];
 max_MUE = [];
 max_FUE = [];
-for i=2:16
+for i=1:16
     fprintf('FBS num = %d\t', i);
     maxmue = 0.;
     maxfue = 0.;
@@ -23,7 +22,7 @@ for i=2:16
     lowCnt = 0;
     
     for j=1:100
-        s = sprintf('Rref_1/R3_%d_%d.mat',i,j);
+        s = sprintf('R_5/pro_%d_%d.mat',i,j);
         filename = strcat(s);
         if exist(s)
             load(filename);
@@ -58,11 +57,12 @@ figure;
 hold on;
 grid on;
 box on;
-plot( ones(2,16)*1.0, '--k', 'LineWidth',1 );
-plot(MUE_C, '--*r', 'LineWidth',1,'MarkerSize',10);
-title('MUE capacity in high interference','FontSize',14, 'FontWeight','bold');
+plot( ones(1,16)*1.0, '--k', 'LineWidth',1 );
+plot(MUE_C, '--*b', 'LineWidth',1,'MarkerSize',10);
+title('MUE capacity in low interference','FontSize',14, 'FontWeight','bold');
 xlabel('FBS Numbers','FontSize',14, 'FontWeight','bold');
 ylabel('Capacity(b/s/HZ)','FontSize',14, 'FontWeight','bold');
+xlim([2 16]);
 % legend({'threshold','RF1','RF2'},'FontSize',14, 'FontWeight','bold');
 %%
 figure;
@@ -70,30 +70,32 @@ hold on;
 grid on;
 box on;
 % plot( ones(1,16)*2.0, '--k', 'LineWidth',1 );
-plot(sum_FUE, '--*r', 'LineWidth',1,'MarkerSize',10);
-title('SUM capacity of FUEs in high interference','FontSize',14, 'FontWeight','bold');
+plot(sum_FUE, '--*b', 'LineWidth',1,'MarkerSize',10);
+title('SUM capacity of FUEs in low interference','FontSize',14, 'FontWeight','bold');
 xlabel('FBS Numbers','FontSize',14, 'FontWeight','bold');
 ylabel('Capacity(b/s/HZ)','FontSize',14, 'FontWeight','bold');
+xlim([2 16]);
 % legend({'threshold','RF1','RF2'},'FontSize',14, 'FontWeight','bold');
 %%
 figure;
 hold on;
 grid on;
 box on;
-plot( ones(2,16)*1.0, '--k', 'LineWidth',1 );
-plot(min_FUE, '--*r', 'LineWidth',1,'MarkerSize',10);
-title('min FUE capacity in high interference','FontSize',14, 'FontWeight','bold');
+plot( ones(1,16)*1.0, '--k', 'LineWidth',1 );
+plot(min_FUE, '--*b', 'LineWidth',1,'MarkerSize',10);
+title('min FUE capacity in low interference','FontSize',14, 'FontWeight','bold');
 xlabel('FBS Numbers','FontSize',14, 'FontWeight','bold');
 ylabel('Capacity(b/s/HZ)','FontSize',14, 'FontWeight','bold');
+xlim([2 16]);
 % legend({'threshold','RF1','RF2'},'FontSize',14, 'FontWeight','bold');
-%%
-figure;
-hold on;
-grid on;
-box on;
-plot( ones(2,16)*1.0, '--k', 'LineWidth',1 );
-plot(max_MUE, '--*r', 'LineWidth',1,'MarkerSize',10);
-title('max MUE capacity in high interference','FontSize',14, 'FontWeight','bold');
-xlabel('FBS Numbers','FontSize',14, 'FontWeight','bold');
-ylabel('Capacity(b/s/HZ)','FontSize',14, 'FontWeight','bold');
+% %%
+% figure;
+% hold on;
+% grid on;
+% box on;
+% plot( ones(2,16)*1.0, '--k', 'LineWidth',1 );
+% plot(max_MUE, '--*r', 'LineWidth',1,'MarkerSize',10);
+% title('max MUE capacity in high interference','FontSize',14, 'FontWeight','bold');
+% xlabel('FBS Numbers','FontSize',14, 'FontWeight','bold');
+% ylabel('Capacity(b/s/HZ)','FontSize',14, 'FontWeight','bold');
 % legend({'threshold','RF1','RF2'},'FontSize',14, 'FontWeight','bold');

@@ -255,7 +255,7 @@ end
     answer.min_CFUE = min_CFUE;
     QFinal = answer;
 % end
-save(sprintf('Rref_1/R3_%d_%d.mat',fbsCount, saveNum),'QFinal');
+save(sprintf('Rref_2/R3_%d_%d.mat',fbsCount, saveNum),'QFinal');
 
 end
 
