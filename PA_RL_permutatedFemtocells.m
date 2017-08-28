@@ -222,7 +222,7 @@ end
                 R = beta*fbs.C_FUE*mue(1).C;
 %                 R = beta*fbs.C_FUE;
             else
-                R = beta*fbs.C_FUE - (1/beta)*dum1*dum2;
+                R = beta*fbs.C_FUE - (1/beta)*dum1-dum2;
 %                 R = beta*fbs.C_FUE - (1/beta)*dum1*(minCFUE-q_fue).^2;
 %                 R = beta*fbs.C_FUE - (1/beta)*dum1;
             end
@@ -284,7 +284,7 @@ end
     answer.sum_CFUE = sum_CFUE;
     answer.min_CFUE = min_CFUE;
     QFinal = answer;
-    save(sprintf('R_6/pro_%d_%d.mat',fbsCount, saveNum),'QFinal');
+    save(sprintf('R_7/pro_%d_%d.mat',fbsCount, saveNum),'QFinal');
 end
 
 

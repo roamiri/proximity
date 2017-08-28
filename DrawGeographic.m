@@ -38,8 +38,9 @@ hold on;
 grid on;
 
 dM1 = 15; dM2 = 50; dM3 = 125; 
-% dB1 = 50; dB2 = 150; dB3 = 400;
-dB1 = 250; dB2 = 300; dB3 = 350;
+% dM1 = 30; dM2 = 50; dM3 = 80;
+dB1 = 50; dB2 = 150; dB3 = 400;
+% dB1 = 250; dB2 = 300; dB3 = 350;
 BS = BaseStation(0 , 0 , 50);
 % FBS = QFinal.FBS;
 fbs = FBS{1};
