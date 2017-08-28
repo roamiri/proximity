@@ -190,7 +190,7 @@ end
         for i=1:size(mue,2)
             dum1 = dum1 * (mue(i).C-q_mue)^2;
         end
-        dum2 = 1.0;
+        dum2 = 0.0;
         minCFUE = inf;
         for j=1:size(FBS,2)
             fbs = FBS{j};
@@ -198,7 +198,7 @@ end
             if minCFUE>fbs.C_FUE
                 minCFUE = fbs.C_FUE;
             end
-            dum2 = dum2 * (fbs.C_FUE-q_fue)^2;
+            dum2 = dum2 + (fbs.C_FUE-q_fue)^2;
             FBS{j}=fbs;
         end
         
