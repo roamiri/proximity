@@ -284,7 +284,7 @@ end
     answer.sum_CFUE = sum_CFUE;
     answer.min_CFUE = min_CFUE;
     QFinal = answer;
-    save(sprintf('R_7/pro_%d_%d.mat',fbsCount, saveNum),'QFinal');
+    save(sprintf('R_8/pro_%d_%d.mat',fbsCount, saveNum),'QFinal');
 end
 
 
