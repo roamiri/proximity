@@ -23,7 +23,7 @@ for i=1:16
     lowCnt = 0;
     
     for j=1:100
-        s = sprintf('R_12/pro_%d_%d.mat',i,j);
+        s = sprintf('R_16/pro_%d_%d.mat',i,j);
         filename = strcat(s);
         if exist(s)
             load(filename);
