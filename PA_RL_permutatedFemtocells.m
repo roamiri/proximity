@@ -188,7 +188,7 @@ end
 %             end
         dum1 = 1.0;
         for i=1:size(mue,2)
-            dum1 = dum1 * (mue(i).C-q_mue)^3;
+            dum1 = dum1 * (mue(i).C-q_mue)^2;
         end
         dum2 = 0.0;
         minCFUE = inf;
@@ -218,14 +218,14 @@ end
             end
             % CALCULATING NEXT STATE AND REWARD
             beta = fbs.dMUE/dth;
-            if (minCFUE>q_fue) && (mue(1).C>q_mue)
-                R = beta*fbs.C_FUE;
+%             if (minCFUE>q_fue) && (mue(1).C>q_mue)
 %                 R = beta*fbs.C_FUE;
-            else
-                R = beta*fbs.C_FUE*(mue(1).C).^2 -(fbs.C_FUE-q_fue).^2;
+%                 R = beta*fbs.C_FUE;
+%             else
+                R = beta*fbs.C_FUE*(mue(1).C).^2 -(fbs.C_FUE-q_fue).^2 - (1/beta)*dum1;
 %                 R = beta*fbs.C_FUE - (1/beta)*dum1*(minCFUE-q_fue).^2;
 %                 R = beta*fbs.C_FUE - (1/beta)*dum1;
-            end
+%             end
 %             if R<0
 %                 R=0;
 %             end
@@ -284,7 +284,7 @@ end
     answer.sum_CFUE = sum_CFUE;
     answer.min_CFUE = min_CFUE;
     QFinal = answer;
-    save(sprintf('R_17/pro_%d_%d.mat',fbsCount, saveNum),'QFinal');
+    save(sprintf('R_18/pro_%d_%d.mat',fbsCount, saveNum),'QFinal');
 end
 
 

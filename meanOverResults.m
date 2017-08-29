@@ -23,7 +23,7 @@ for i=1:16
     lowCnt = 0;
     
     for j=1:100
-        s = sprintf('R_16/pro_%d_%d.mat',i,j);
+        s = sprintf('R_14/pro_%d_%d.mat',i,j);
         filename = strcat(s);
         if exist(s)
             load(filename);
@@ -62,7 +62,7 @@ figure;
 hold on;
 grid on;
 box on;
-plot( ones(1,16)*1.0, '--k', 'LineWidth',1 );
+plot(ones(1,16)*1.0, '--k', 'LineWidth',1);
 plot(MUE_C, '--*b', 'LineWidth',1,'MarkerSize',10);
 title('MUE capacity in high interference','FontSize',14, 'FontWeight','bold');
 xlabel('FBS Numbers','FontSize',14, 'FontWeight','bold');
