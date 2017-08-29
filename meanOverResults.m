@@ -23,7 +23,7 @@ for i=1:16
     lowCnt = 0;
     
     for j=1:100
-        s = sprintf('R_6/pro_%d_%d.mat',i,j);
+        s = sprintf('R_12/pro_%d_%d.mat',i,j);
         filename = strcat(s);
         if exist(s)
             load(filename);
@@ -64,7 +64,7 @@ grid on;
 box on;
 plot( ones(1,16)*1.0, '--k', 'LineWidth',1 );
 plot(MUE_C, '--*b', 'LineWidth',1,'MarkerSize',10);
-title('MUE capacity in low interference','FontSize',14, 'FontWeight','bold');
+title('MUE capacity in high interference','FontSize',14, 'FontWeight','bold');
 xlabel('FBS Numbers','FontSize',14, 'FontWeight','bold');
 ylabel('Capacity(b/s/HZ)','FontSize',14, 'FontWeight','bold');
 xlim([2 16]);
@@ -82,7 +82,7 @@ for i=1:16
     end
 end
 plot(min_FUE, '--*r', 'LineWidth',1,'MarkerSize',10);
-title('min FUE capacity in low interference','FontSize',14, 'FontWeight','bold');
+title('min FUE capacity in high interference','FontSize',14, 'FontWeight','bold');
 xlabel('FBS Numbers','FontSize',14, 'FontWeight','bold');
 ylabel('Capacity(b/s/HZ)','FontSize',14, 'FontWeight','bold');
 xlim([2 16]);
@@ -94,7 +94,7 @@ grid on;
 box on;
 % plot( ones(1,16)*2.0, '--k', 'LineWidth',1 );
 plot(sum_FUE, '--*b', 'LineWidth',1,'MarkerSize',10);
-title('SUM capacity of FUEs in low interference','FontSize',14, 'FontWeight','bold');
+title('SUM capacity of FUEs in high interference','FontSize',14, 'FontWeight','bold');
 xlabel('FBS Numbers','FontSize',14, 'FontWeight','bold');
 ylabel('Capacity(b/s/HZ)','FontSize',14, 'FontWeight','bold');
 xlim([2 16]);

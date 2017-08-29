@@ -219,16 +219,16 @@ end
             % CALCULATING NEXT STATE AND REWARD
             beta = fbs.dMUE/dth;
             if (minCFUE>q_fue) && (mue(1).C>q_mue)
-                R = beta*fbs.C_FUE*mue(1).C;
+                R = beta*fbs.C_FUE;
 %                 R = beta*fbs.C_FUE;
             else
-                R = beta*fbs.C_FUE - (1/beta)*dum1-dum2;
+                R = beta*fbs.C_FUE*mue(1).C - (1/beta)*dum1-(fbs.C_FUE-q_fue).^2;
 %                 R = beta*fbs.C_FUE - (1/beta)*dum1*(minCFUE-q_fue).^2;
 %                 R = beta*fbs.C_FUE - (1/beta)*dum1;
             end
-            if R<0
-                R=0;
-            end
+%             if R<0
+%                 R=0;
+%             end
             for nextState=1:size(states,1)
                 if states(nextState,:) == fbs.state
                     QTable(kk,jjj) = QTable(kk,jjj) + alpha*(R+gamma*qMax(nextState)-QTable(kk,jjj));
@@ -284,7 +284,7 @@ end
     answer.sum_CFUE = sum_CFUE;
     answer.min_CFUE = min_CFUE;
     QFinal = answer;
-    save(sprintf('R_8/pro_%d_%d.mat',fbsCount, saveNum),'QFinal');
+    save(sprintf('R_14/pro_%d_%d.mat',fbsCount, saveNum),'QFinal');
 end
 
 

@@ -9,7 +9,7 @@ permutationsMat = zeros(100,16);
 for i=1:100
     permutationsMat(i,:) = randperm(16,16);
 end
- parfor i=1:50
+ parfor i=1:100
     fprintf('Main Loop :%d',i);
     sarsa(permutationsMat(i,:),i);
  end
