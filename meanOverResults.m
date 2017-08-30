@@ -23,7 +23,7 @@ for i=1:16
     lowCnt = 0;
     
     for j=1:100
-        s = sprintf('R_14/pro_%d_%d.mat',i,j);
+        s = sprintf('Rref_1/R3_%d_%d.mat',i,j);
         filename = strcat(s);
         if exist(s)
             load(filename);
@@ -39,7 +39,7 @@ for i=1:16
                 mue_C = mue_C + cc;
 %                 minfue = minfue + QFinal.min_CFUE;
                 sumfue = sumfue + QFinal.sum_CFUE;
-                c_fue_vec = c_fue_vec + QFinal.C_FUE;
+                c_fue_vec = c_fue_vec + QFinal.c_fue;
                 Cnt = Cnt+1;
 %             else
 %                 lowCnt = lowCnt + 1;
@@ -68,6 +68,7 @@ title('MUE capacity in high interference','FontSize',14, 'FontWeight','bold');
 xlabel('FBS Numbers','FontSize',14, 'FontWeight','bold');
 ylabel('Capacity(b/s/HZ)','FontSize',14, 'FontWeight','bold');
 xlim([2 16]);
+ylim([0 3])
 % legend({'threshold','RF1','RF2'},'FontSize',14, 'FontWeight','bold');
 %%
 figure;
@@ -86,6 +87,7 @@ title('min FUE capacity in high interference','FontSize',14, 'FontWeight','bold'
 xlabel('FBS Numbers','FontSize',14, 'FontWeight','bold');
 ylabel('Capacity(b/s/HZ)','FontSize',14, 'FontWeight','bold');
 xlim([2 16]);
+
 % legend({'threshold','RF1','RF2'},'FontSize',14, 'FontWeight','bold');
 %%
 figure;
