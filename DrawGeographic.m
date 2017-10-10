@@ -50,9 +50,9 @@ p2 = plot(fbs.X, fbs.Y+10, 'k');
 p2.Marker = 'x';
 for i=2:16
     fbs = FBS{i};
-    p = plot(fbs.X, fbs.Y, 'r');
+    p = plot(fbs.X, fbs.Y, 'r','LineWidth',0.75,'MarkerSize',8);
     p.Marker = '*';
-    p = plot(fbs.X, fbs.Y+10, 'k');
+    p = plot(fbs.X, fbs.Y+10, 'k','LineWidth',0.75,'MarkerSize',8);
     p.Marker = 'x';
     
 %     ss = size(fbs.powerProfile,2);
@@ -61,7 +61,7 @@ for i=2:16
 end
 axis([-300,350,-100,350]);
 
-p3 = plot(BS.X, BS.Y, 'b');
+p3 = plot(BS.X, BS.Y, 'b','LineWidth',1,'MarkerSize',8);
 p3.Marker = 'diamond';
 circle(BS.X,BS.Y,dB1, 'b');
 circle(BS.X,BS.Y,dB2, 'b');
@@ -69,10 +69,10 @@ circle(BS.X,BS.Y,dB3, 'b');
 % selectedMUE = QFinal.mue;
 selectedMUE.X = 204;
 selectedMUE.Y = 207;
-p4 = plot(selectedMUE.X, selectedMUE.Y, 'k');
+p4 = plot(selectedMUE.X, selectedMUE.Y, 'k','LineWidth',1,'MarkerSize',8);
 % p1 = plot(150, 150, 'k');
-p5 = plot(-200, 0, 'k');
-p5.Marker = 'square';
+% p5 = plot(-200, 0, 'k');
+% p5.Marker = 'square';
 % p1.Marker = 'square';
 p4.Marker = 'square';
 circle(selectedMUE.X,selectedMUE.Y,dM1, 'r');
@@ -84,6 +84,7 @@ xlabel('x position','FontSize',14, 'FontWeight','bold');
 ylabel('y position','FontSize',14, 'FontWeight','bold');
 legend([p3 p1 p2 p4],{'BS','FBS', 'FUE', 'MUE'});
 box on;
+set(gca,'fontsize',14, 'FontWeight','bold');
 % pbaspect([1 1 1])
 % 
 % text(-250, 270, 'd', 'Color', 'b');
@@ -106,5 +107,5 @@ hold on
 th = 0:pi/50:2*pi;
 xunit = r * cos(th) + x;
 yunit = r * sin(th) + y;
-h = plot(xunit, yunit, color);
+h = plot(xunit, yunit, color,'LineWidth',1.5,'MarkerSize',10);
 end
