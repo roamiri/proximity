@@ -253,9 +253,10 @@ end
     answer.c_fue=c_fue;
     answer.sum_CFUE = sum_CFUE;
     answer.min_CFUE = min_CFUE;
+    answer.episode = episode;
     QFinal = answer;
 % end
-save(sprintf('Rref_2/R3_%d_%d.mat',fbsCount, saveNum),'QFinal');
+save(sprintf('oct/Rref/Rref_%d_%d.mat',fbsCount, saveNum),'QFinal');
 
 end
 

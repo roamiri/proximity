@@ -222,10 +222,10 @@ end
 %                 R = beta*fbs.C_FUE;
 %                 R = beta*fbs.C_FUE;
 %             else
-                R = beta*fbs.C_FUE*(mue(1).C).^7 -(fbs.C_FUE-q_fue).^2 - (1/beta)*dum1;
+                R = beta*fbs.C_FUE*(mue(1).C).^2 -(fbs.C_FUE-q_fue).^2 - (1/beta)*dum1;
 %                 R = beta*fbs.C_FUE - (1/beta)*dum1*(minCFUE-q_fue).^2;
 %                 R = beta*fbs.C_FUE - (1/beta)*dum1;
-%             end
+%             en
 %             if R<0
 %                 R=0;
 %             end
@@ -283,8 +283,9 @@ end
     answer.C_FUE = c_fue;
     answer.sum_CFUE = sum_CFUE;
     answer.min_CFUE = min_CFUE;
+    answer.episode = episode;
     QFinal = answer;
-    save(sprintf('R_22/pro_%d_%d.mat',fbsCount, saveNum),'QFinal');
+    save(sprintf('oct10/R_18/pro_%d_%d.mat',fbsCount, saveNum),'QFinal');
 end
 
 
