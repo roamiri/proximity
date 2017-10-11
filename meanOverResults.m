@@ -32,7 +32,7 @@ for i=1:16
 
     
     for j=1:100
-        s = sprintf('R_18/pro_%d_%d.mat',i,j);
+        s = sprintf('oct10/R_18/pro_%d_%d.mat',i,j);
         filename = strcat(s);
         if exist(s)
             load(filename);
@@ -65,7 +65,8 @@ for i=1:16
     lowCnt = 0;
     
     for j=1:100
-        s = sprintf('Rref_1/R3_%d_%d.mat',i,j);
+%         s = sprintf('Rref_1/R3_%d_%d.mat',i,j);
+        s = sprintf('oct10/Rref_noshare/Rref_%d_%d.mat',i,j);
         filename = strcat(s);
         if exist(s)
             load(filename);
