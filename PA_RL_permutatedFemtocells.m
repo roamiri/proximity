@@ -286,7 +286,7 @@ end
     answer.episode = episode;
     answer.time = toc;
     QFinal = answer;
-    save(sprintf('oct10/R_18_noshare/pro_%d_%d.mat',fbsCount, saveNum),'QFinal');
+    save(sprintf('oct10/R_18_time/pro_%d_%d.mat',fbsCount, saveNum),'QFinal');
 end
 
 

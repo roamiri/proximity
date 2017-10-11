@@ -13,8 +13,8 @@ Q_ans = zeros(size(states,1) , size(actions , 2));
 
 for i=1:16
 %     Q_ans = fair_R3(mueLocation,i,NumRealization, Q);
-    %Q_ans = PA_RL_permutatedFemtocells(i,femtocellPermutation,1e3, Q, saveNum);
-    PA_RL_permutatedFemtocells(i,femtocellPermutation,1e3, Q, saveNum);
-    %Q = Q_ans;
+    Q_ans = PA_RL_permutatedFemtocells(i,femtocellPermutation,1e3, Q, saveNum);
+    %PA_RL_permutatedFemtocells(i,femtocellPermutation,1e3, Q, saveNum);
+    Q = Q_ans;
 end
 end
