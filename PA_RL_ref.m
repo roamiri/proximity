@@ -256,7 +256,7 @@ end
     answer.episode = episode;
     QFinal = answer;
 % end
-save(sprintf('oct/Rref/Rref_%d_%d.mat',fbsCount, saveNum),'QFinal');
+save(sprintf('oct10/Rref/Rref_%d_%d.mat',fbsCount, saveNum),'QFinal');
 
 end
 

@@ -10,7 +10,7 @@ function Q = PA_RL_permutatedFemtocells(fbsCount,femtocellPermutation, NumRealiz
 clc;
 format short
 format compact
-
+tic;
 %% Parameters
 Pmin = -20;                                                                                                                                                                                                                                                                                                                                                                           %dBm
 Pmax = 25; %dBm
@@ -284,8 +284,9 @@ end
     answer.sum_CFUE = sum_CFUE;
     answer.min_CFUE = min_CFUE;
     answer.episode = episode;
+    answer.time = toc;
     QFinal = answer;
-    save(sprintf('oct10/R_18/pro_%d_%d.mat',fbsCount, saveNum),'QFinal');
+    save(sprintf('oct10/R_18_noshare/pro_%d_%d.mat',fbsCount, saveNum),'QFinal');
 end
 
 
