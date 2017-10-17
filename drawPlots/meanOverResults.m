@@ -2,9 +2,6 @@
 clear;
 clc;
 
-dirName = 'R_1';
-listing=dir(dirName);
-
 MUE_C = [];    
 min_FUE = [];
 sum_FUE = [];
@@ -32,12 +29,12 @@ for i=1:16
 
     
     for j=1:100
-        s = sprintf('oct10/R_18/pro_%d_%d.mat',i,j);
+        s = sprintf('oct10/R_18_time/pro_%d_%d.mat',i,j);
         filename = strcat(s);
         if exist(s)
             load(filename);
                 C = QFinal.mue.C_profile;
-                cc = sum(C(40000:size(C,2)))/(-40000+size(C,2));
+                cc = sum(C(40000:size(C,2)))/(-40000+size(C,2)+1);
                 mue_C = mue_C + cc;
                 sumfue = sumfue + QFinal.sum_CFUE;
                 c_fue_vec = c_fue_vec + QFinal.C_FUE;
@@ -71,7 +68,7 @@ for i=1:16
         if exist(s)
             load(filename);
                 C = QFinal.mue.C_profile;
-                cc = sum(C(40000:size(C,2)))/(-40000+size(C,2));
+                cc = sum(C(40000:size(C,2)))/(-40000+size(C,2)+1);
                 mue_C = mue_C + cc;
                 sumfue = sumfue + QFinal.sum_CFUE;
                 c_fue_vec = c_fue_vec + QFinal.c_fue;
@@ -120,7 +117,7 @@ title('FUEs capacity','FontSize',14, 'FontWeight','bold');
 xlabel('FBS Numbers','FontSize',14, 'FontWeight','bold');
 ylabel('Capacity(b/s/HZ)','FontSize',14, 'FontWeight','bold');
 xlim([2 16]);
-ylim([0 3.5])
+ylim([0 3.5]);
 legend({'threshold','proposed RF','[8]'},'FontSize',14, 'FontWeight','bold');
 %%
 figure;
