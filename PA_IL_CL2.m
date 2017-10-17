@@ -4,7 +4,7 @@
 %   Which contains two phase, Independent and Cooperative Learning (IL&CL) 
 %   
 %
-function Q = PA_IL_CL(fbsCount,femtocellPermutation, NumRealization,QTable, saveNum)
+function FBS_old = PA_IL_CL2(FBS_old, fbsCount,femtocellPermutation, NumRealization, saveNum)
 
 %% Initialization
 % clear all;
@@ -43,6 +43,7 @@ states = allcomb(0:3 , 0:3); % states = (dMUE , dBS)
 Q_init = ones(size(states,1) , size(actions , 2)) * 0.0;
 Q1 = ones(size(states,1) , size(actions , 2)) * inf;
 sumQ = ones(size(states,1) , size(actions , 2)) * 0.0;
+meanQ = ones(size(states,1) , size(actions , 2)) * 0.0;
 
 alpha = 0.5; gamma = 0.9; epsilon = 0.1 ; Iterations = 50000;
 %% Generate the UEs
@@ -94,13 +95,29 @@ end
     %% Initialization and find MUE Capacity
     % permutedPowers = npermutek(actions,3);
     permutedPowers = randperm(size(actions,2),size(FBS,2));
-    % y=randperm(size(permutedPowers,1));
-    for j=1:size(FBS,2)
-        fbs = FBS{j};
-        fbs = fbs.setPower(actions(permutedPowers(j)));
-        fbs = fbs.getDistanceStatus;
-        fbs = fbs.setQTable(Q_init);
-        FBS{j} = fbs;
+    
+    if fbsCount > 4
+        for j=1:fbsCount-1
+            FBS{j} = FBS_old{j};
+            meanQ = meanQ + FBS{j}.Q;
+        end
+        meanQ = meanQ/(fbsCount-1);
+        FBS{fbsCount} = FBS{fbsCount}.getDistanceStatus;
+        FBS{fbsCount} = FBS{fbsCount}.setQTable(Q_init);
+        for kk = 1:size(states,1)
+            if states(kk,:) == FBS{fbsCount}.state
+                break;
+            end
+        end
+        FBS{fbsCount}.Q(kk,:)=meanQ(kk,:); %Receiving info from other Agents(FBSs) with the same state
+    else 
+        for j=1:size(FBS,2)
+            fbs = FBS{j};
+            fbs = fbs.setPower(actions(permutedPowers(j)));
+            fbs = fbs.getDistanceStatus;
+            fbs = fbs.setQTable(Q_init);
+            FBS{j} = fbs;
+        end
     end
 %     selectedMUE.SINR = SINR_MUE(FBS, BS, selectedMUE, -120, 1000);
 %     selectedMUE.C = log2(1+selectedMUE.SINR);
@@ -283,5 +300,6 @@ end
     answer.episode = episode;
     answer.time = toc;
     QFinal = answer;
-    save(sprintf('oct17/R_18_CL/pro_%d_%d.mat',fbsCount, saveNum),'QFinal');
+    save(sprintf('oct17/R_18_CL2/pro_%d_%d.mat',fbsCount, saveNum),'QFinal');
+    FBS_old = FBS;
 end
