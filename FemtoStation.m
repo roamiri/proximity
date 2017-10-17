@@ -18,6 +18,7 @@ classdef FemtoStation
       powerProfile = []
       C_FUE
       C_profile = []
+      Q
    end
    methods
       function obj = FemtoStation(xPos, yPos, BS, MUE, dFUE)
@@ -28,6 +29,10 @@ classdef FemtoStation
         obj.dFUE = dFUE;
         obj.FUEX = xPos;
         obj.FUEY = yPos+dFUE;
+      end
+      
+      function obj = setQTable(obj,QTable)
+          obj.Q = QTable;
       end
       
       function obj = setPower(obj,power)
