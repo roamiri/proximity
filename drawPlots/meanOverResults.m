@@ -29,7 +29,7 @@ for i=1:16
 
     
     for j=1:100
-        s = sprintf('oct10/R_18_time/pro_%d_%d.mat',i,j);
+        s = sprintf('oct17/R_18_CL/pro_%d_%d.mat',i,j);
         filename = strcat(s);
         if exist(s)
             load(filename);
