@@ -148,7 +148,7 @@ end
     dth = 25; %meter
 
     for episode = 1:Iterations
-        textprogressbar((episode/Iterations)*100);
+%         textprogressbar((episode/Iterations)*100);
         permutedPowers = randperm(size(actions,2),size(FBS,2));
         sumQ = sumQ * 0.0;
         for j=1:size(FBS,2)
