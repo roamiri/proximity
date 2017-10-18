@@ -1,7 +1,7 @@
 
 clear;
 clc;
-
+%%
 MUE_C = [];    
 min_FUE = [];
 sum_FUE = [];
@@ -29,7 +29,7 @@ for i=1:16
 
     
     for j=1:100
-        s = sprintf('oct17/R_18_CL/pro_%d_%d.mat',i,j);
+        s = sprintf('oct17/R_18_CL2/pro_%d_%d.mat',i,j);
         filename = strcat(s);
         if exist(s)
             load(filename);
@@ -103,7 +103,7 @@ hold on;
 grid on;
 box on;
 plot( ones(1,16)*1.0, '--k', 'LineWidth',1);
-for i=1:16
+for i=1:8
     vec = C_FUE_Mat{i};
     vec_ref = C_FUE_Mat_ref{i};
     for j=1:size(vec,2)

@@ -4,8 +4,10 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function runForAll(femtocellPermutation,saveNum)
 
-FBSSet = cell(1,1);
+FBSSet_in = cell(1,1);
 for i=1:16
-    FBSSet = PA_IL_CL2(FBSSet, i,femtocellPermutation,1e3, saveNum);
+    FBSSet_out = PA_IL_CL2(FBSSet_in, i,femtocellPermutation,1e3, saveNum);
+    FBSSet_in = [];
+    FBSSet_in = FBSSet_out;
 end
 end

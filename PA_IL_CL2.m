@@ -4,13 +4,13 @@
 %   Which contains two phase, Independent and Cooperative Learning (IL&CL) 
 %   
 %
-function FBS_old = PA_IL_CL2(FBS_old, fbsCount,femtocellPermutation, NumRealization, saveNum)
+function FBS_out = PA_IL_CL2(FBS_in, fbsCount,femtocellPermutation, NumRealization, saveNum)
 
 %% Initialization
 % clear all;
 clc;
-format short
-format compact
+% format short
+% format compact
 tic;
 %% Parameters
 Pmin = -20;                                                                                                                                                                                                                                                                                                                                                                           %dBm
@@ -98,7 +98,7 @@ end
     
     if fbsCount > 4
         for j=1:fbsCount-1
-            FBS{j} = FBS_old{j};
+            FBS{j} = FBS_in{j};
             meanQ = meanQ + FBS{j}.Q;
         end
         meanQ = meanQ/(fbsCount-1);
@@ -140,7 +140,7 @@ end
     [G, L] = measure_channel(FBS,MBS,mue,NumRealization);
     %% Main Loop
     fprintf('Loop for %d number of FBS :\t', fbsCount);
-    textprogressbar(sprintf('calculating outputs:'));
+%     textprogressbar(sprintf('calculating outputs:'));
     count = 0;
     MUE_C = zeros(1,Iterations);
     xx = zeros(1,Iterations);
@@ -282,24 +282,24 @@ end
     answer.Q = sumQ;
     answer.Error = errorVector;
     answer.FBS = FBS;
-    min_CFUE = inf;
+%     min_CFUE = inf;
     for j=1:size(FBS,2)
-        C = FBS{1,j}.C_profile;
-        c_fue(1,j) = sum(C(40000:size(C,2)))/(-40000+size(C,2));
-        if min_CFUE > c_fue(1,j)
-            min_CFUE = c_fue(1,j);
-        end
+%         C = FBS{1,j}.C_profile;
+        c_fue(1,j) = FBS{1,j}.C_FUE;%sum(C(40000:size(C,2)))/(-40000+size(C,2));
+%         if min_CFUE > c_fue(1,j)
+%             min_CFUE = c_fue(1,j);
+%         end
     end
     sum_CFUE = 0.0;
     for i=1:size(FBS,2)
-        sum_CFUE = sum_CFUE + c_fue(1,i);
+        sum_CFUE = sum_CFUE + FBS{i}.C_FUE;
     end
     answer.C_FUE = c_fue;
     answer.sum_CFUE = sum_CFUE;
-    answer.min_CFUE = min_CFUE;
+%     answer.min_CFUE = min_CFUE;
     answer.episode = episode;
     answer.time = toc;
     QFinal = answer;
     save(sprintf('oct17/R_18_CL2/pro_%d_%d.mat',fbsCount, saveNum),'QFinal');
-    FBS_old = FBS;
+    FBS_out = FBS;
 end

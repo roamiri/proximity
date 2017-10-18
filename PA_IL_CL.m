@@ -156,7 +156,7 @@ end
                         end
                     end
                     if size(FBS,2) > 4 
-                        [M, index] = max(sumQ(kk,:));     % CL method
+                        [M, index] = max(sumQ(kk,:));    % CL method
                     else                                    
                         [M, index] = max(fbs.Q(kk,:));   %IL method
                     end
