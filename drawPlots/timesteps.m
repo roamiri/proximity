@@ -9,7 +9,7 @@ for i=1:16
     episodes = 0;
     
     for j=1:100
-        s = sprintf('oct17/R_18_CL/pro_%d_%d.mat',i,j);
+        s = sprintf('oct17/R_18_CL2/pro_%d_%d.mat',i,j);
         filename = strcat(s);
         if exist(s)
             load(filename);
@@ -29,7 +29,7 @@ for i=1:16
     episodes = 0;
     
     for j=1:100
-        s = sprintf('oct10/Rref_noshare/Rref_%d_%d.mat',i,j);
+        s = sprintf('oct17/R_18_CL/pro_%d_%d.mat',i,j);
         filename = strcat(s);
         if exist(s)
             load(filename);
