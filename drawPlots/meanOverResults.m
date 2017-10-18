@@ -1,6 +1,7 @@
 
 clear;
 clc;
+
 %%
 MUE_C = [];    
 min_FUE = [];
@@ -8,14 +9,6 @@ sum_FUE = [];
 max_MUE = [];
 max_FUE = [];
 C_FUE_Mat = cell(1,16);
-
-MUE_C_ref = [];    
-min_FUE_ref = [];
-sum_FUE_ref = [];
-max_MUE_ref = [];
-max_FUE_ref = [];
-C_FUE_Mat_ref = cell(1,16);
-
 for i=1:16
     fprintf('FBS num = %d\t', i);
     maxmue = 0.;
@@ -50,6 +43,12 @@ for i=1:16
     min_FUE = [min_FUE min(C_FUE_Mat{i})];
 end
 %%
+MUE_C_ref = [];    
+min_FUE_ref = [];
+sum_FUE_ref = [];
+max_MUE_ref = [];
+max_FUE_ref = [];
+C_FUE_Mat_ref = cell(1,16);
 for i=1:16
     fprintf('FBS num = %d\t', i);
     maxmue = 0.;
@@ -63,7 +62,7 @@ for i=1:16
     
     for j=1:100
 %         s = sprintf('Rref_1/R3_%d_%d.mat',i,j);
-        s = sprintf('oct10/Rref_noshare/Rref_%d_%d.mat',i,j);
+        s = sprintf('oct17/R_18_CL/pro_%d_%d.mat',i,j);
         filename = strcat(s);
         if exist(s)
             load(filename);
@@ -71,7 +70,7 @@ for i=1:16
                 cc = sum(C(40000:size(C,2)))/(-40000+size(C,2)+1);
                 mue_C = mue_C + cc;
                 sumfue = sumfue + QFinal.sum_CFUE;
-                c_fue_vec = c_fue_vec + QFinal.c_fue;
+                c_fue_vec = c_fue_vec + QFinal.C_FUE;
                 Cnt = Cnt+1;
         end
     end
@@ -90,7 +89,7 @@ grid on;
 box on;
 plot(ones(1,16)*1.0, '--k', 'LineWidth',1);
 plot(MUE_C, '--*r', 'LineWidth',1,'MarkerSize',10);
-% plot(MUE_C_ref, '--*b', 'LineWidth',1,'MarkerSize',10);
+plot(MUE_C_ref, '--*b', 'LineWidth',1,'MarkerSize',10);
 title('MUE capacity','FontSize',14, 'FontWeight','bold');
 xlabel('FBS Numbers','FontSize',14, 'FontWeight','bold');
 ylabel('Capacity(b/s/HZ)','FontSize',14, 'FontWeight','bold');
@@ -105,14 +104,14 @@ box on;
 plot( ones(1,16)*1.0, '--k', 'LineWidth',1);
 for i=1:16
     vec = C_FUE_Mat{i};
-%     vec_ref = C_FUE_Mat_ref{i};
+    vec_ref = C_FUE_Mat_ref{i};
     for j=1:size(vec,2)
         plot(i,vec(j), '*r', 'LineWidth',1,'MarkerSize',10);
-%         plot(i,vec_ref(j), '*b', 'LineWidth',1,'MarkerSize',10);
+        plot(i,vec_ref(j), '*b', 'LineWidth',1,'MarkerSize',10);
     end
 end
 plot(min_FUE, '--r', 'LineWidth',1,'MarkerSize',10);
-% plot(min_FUE_ref, '--b', 'LineWidth',1,'MarkerSize',10);
+plot(min_FUE_ref, '--b', 'LineWidth',1,'MarkerSize',10);
 title('FUEs capacity','FontSize',14, 'FontWeight','bold');
 xlabel('FBS Numbers','FontSize',14, 'FontWeight','bold');
 ylabel('Capacity(b/s/HZ)','FontSize',14, 'FontWeight','bold');

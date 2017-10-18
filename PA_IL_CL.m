@@ -9,8 +9,8 @@ function Q = PA_IL_CL(fbsCount,femtocellPermutation, NumRealization,QTable, save
 %% Initialization
 % clear all;
 clc;
-format short
-format compact
+%format short
+%format compact
 tic;
 %% Parameters
 Pmin = -20;                                                                                                                                                                                                                                                                                                                                                                           %dBm
@@ -123,7 +123,7 @@ end
     [G, L] = measure_channel(FBS,MBS,mue,NumRealization);
     %% Main Loop
     fprintf('Loop for %d number of FBS :\t', fbsCount);
-    textprogressbar(sprintf('calculating outputs:'));
+%     textprogressbar(sprintf('calculating outputs:'));
     count = 0;
     MUE_C = zeros(1,Iterations);
     xx = zeros(1,Iterations);
@@ -131,7 +131,7 @@ end
     dth = 25; %meter
 
     for episode = 1:Iterations
-        textprogressbar((episode/Iterations)*100);
+%         textprogressbar((episode/Iterations)*100);
         permutedPowers = randperm(size(actions,2),size(FBS,2));
         sumQ = sumQ * 0.0;
         for j=1:size(FBS,2)
@@ -265,13 +265,13 @@ end
     answer.Q = sumQ;
     answer.Error = errorVector;
     answer.FBS = FBS;
-    min_CFUE = inf;
+%     min_CFUE = inf;
     for j=1:size(FBS,2)
-        C = FBS{1,j}.C_profile;
-        c_fue(1,j) = sum(C(40000:size(C,2)))/(-40000+size(C,2));
-        if min_CFUE > c_fue(1,j)
-            min_CFUE = c_fue(1,j);
-        end
+%         C = FBS{1,j}.C_profile;
+        c_fue(1,j) = FBS{1,j}.C_FUE;%sum(C(40000:size(C,2)))/(-40000+size(C,2));
+%         if min_CFUE > c_fue(1,j)
+%             min_CFUE = c_fue(1,j);
+%         end
     end
     sum_CFUE = 0.0;
     for i=1:size(FBS,2)
@@ -279,7 +279,7 @@ end
     end
     answer.C_FUE = c_fue;
     answer.sum_CFUE = sum_CFUE;
-    answer.min_CFUE = min_CFUE;
+%     answer.min_CFUE = min_CFUE;
     answer.episode = episode;
     answer.time = toc;
     QFinal = answer;
