@@ -11,6 +11,6 @@ for i=1:100
 end
  parfor i=1:33
     fprintf('Main Loop :%d',i);
-    sarsa(permutationsMat(i,:),i);
+    runForAll(permutationsMat(i,:),i);
  end
 end

@@ -38,12 +38,12 @@ classdef FemtoStation
       function obj = setPower(obj,power)
 %           obj.P = 10^((power-30)/10);
             obj.P = power;
-            obj.powerProfile = [obj.powerProfile power];
+%             obj.powerProfile = [obj.powerProfile power];
       end
       
       function obj = setCapacity(obj,c)
         obj.C_FUE = c;
-        obj.C_profile = [obj.C_profile c];
+%         obj.C_profile = [obj.C_profile c];
       end
       function obj = getDistanceStatus(obj)
           if(obj.dMUE <= obj.dM1 )

@@ -4,13 +4,13 @@
 %   Which contains two phase, Independent and Cooperative Learning (IL&CL) 
 %   
 %
-function Q = PA_IL_CL(fbsCount,femtocellPermutation, NumRealization,QTable, saveNum)
+function FBS_out = PA_IL_CL2(FBS_in, fbsCount,femtocellPermutation, NumRealization, saveNum)
 
 %% Initialization
 % clear all;
 clc;
-format short
-format compact
+% format short
+% format compact
 tic;
 %% Parameters
 Pmin = -20;                                                                                                                                                                                                                                                                                                                                                                           %dBm
@@ -43,6 +43,7 @@ states = allcomb(0:3 , 0:3); % states = (dMUE , dBS)
 Q_init = ones(size(states,1) , size(actions , 2)) * 0.0;
 Q1 = ones(size(states,1) , size(actions , 2)) * inf;
 sumQ = ones(size(states,1) , size(actions , 2)) * 0.0;
+meanQ = ones(size(states,1) , size(actions , 2)) * 0.0;
 
 alpha = 0.5; gamma = 0.9; epsilon = 0.1 ; Iterations = 50000;
 %% Generate the UEs
@@ -94,13 +95,29 @@ end
     %% Initialization and find MUE Capacity
     % permutedPowers = npermutek(actions,3);
     permutedPowers = randperm(size(actions,2),size(FBS,2));
-    % y=randperm(size(permutedPowers,1));
-    for j=1:size(FBS,2)
-        fbs = FBS{j};
-        fbs = fbs.setPower(actions(permutedPowers(j)));
-        fbs = fbs.getDistanceStatus;
-        fbs = fbs.setQTable(Q_init);
-        FBS{j} = fbs;
+    
+    if fbsCount > 4
+        for j=1:fbsCount-1
+            FBS{j} = FBS_in{j};
+            meanQ = meanQ + FBS{j}.Q;
+        end
+        meanQ = meanQ/(fbsCount-1);
+        FBS{fbsCount} = FBS{fbsCount}.getDistanceStatus;
+        FBS{fbsCount} = FBS{fbsCount}.setQTable(Q_init);
+        for kk = 1:size(states,1)
+            if states(kk,:) == FBS{fbsCount}.state
+                break;
+            end
+        end
+        FBS{fbsCount}.Q(kk,:)=meanQ(kk,:); %Receiving info from other Agents(FBSs) with the same state
+    else 
+        for j=1:size(FBS,2)
+            fbs = FBS{j};
+            fbs = fbs.setPower(actions(permutedPowers(j)));
+            fbs = fbs.getDistanceStatus;
+            fbs = fbs.setQTable(Q_init);
+            FBS{j} = fbs;
+        end
     end
 %     selectedMUE.SINR = SINR_MUE(FBS, BS, selectedMUE, -120, 1000);
 %     selectedMUE.C = log2(1+selectedMUE.SINR);
@@ -123,7 +140,7 @@ end
     [G, L] = measure_channel(FBS,MBS,mue,NumRealization);
     %% Main Loop
     fprintf('Loop for %d number of FBS :\t', fbsCount);
-    textprogressbar(sprintf('calculating outputs:'));
+%     textprogressbar(sprintf('calculating outputs:'));
     count = 0;
     MUE_C = zeros(1,Iterations);
     xx = zeros(1,Iterations);
@@ -131,7 +148,7 @@ end
     dth = 25; %meter
 
     for episode = 1:Iterations
-        textprogressbar((episode/Iterations)*100);
+%         textprogressbar((episode/Iterations)*100);
         permutedPowers = randperm(size(actions,2),size(FBS,2));
         sumQ = sumQ * 0.0;
         for j=1:size(FBS,2)
@@ -156,7 +173,7 @@ end
                         end
                     end
                     if size(FBS,2) > 4 
-                        [M, index] = max(sumQ(kk,:));    % CL method
+                        [M, index] = max(sumQ(kk,:));     % CL method
                     else                                    
                         [M, index] = max(fbs.Q(kk,:));   %IL method
                     end
@@ -265,23 +282,24 @@ end
     answer.Q = sumQ;
     answer.Error = errorVector;
     answer.FBS = FBS;
-    min_CFUE = inf;
+%     min_CFUE = inf;
     for j=1:size(FBS,2)
-        C = FBS{1,j}.C_profile;
-        c_fue(1,j) = sum(C(40000:size(C,2)))/(-40000+size(C,2));
-        if min_CFUE > c_fue(1,j)
-            min_CFUE = c_fue(1,j);
-        end
+%         C = FBS{1,j}.C_profile;
+        c_fue(1,j) = FBS{1,j}.C_FUE;%sum(C(40000:size(C,2)))/(-40000+size(C,2));
+%         if min_CFUE > c_fue(1,j)
+%             min_CFUE = c_fue(1,j);
+%         end
     end
     sum_CFUE = 0.0;
     for i=1:size(FBS,2)
-        sum_CFUE = sum_CFUE + c_fue(1,i);
+        sum_CFUE = sum_CFUE + FBS{i}.C_FUE;
     end
     answer.C_FUE = c_fue;
     answer.sum_CFUE = sum_CFUE;
-    answer.min_CFUE = min_CFUE;
+%     answer.min_CFUE = min_CFUE;
     answer.episode = episode;
     answer.time = toc;
     QFinal = answer;
-    save(sprintf('oct17/R_18_CL/pro_%d_%d.mat',fbsCount, saveNum),'QFinal');
+    save(sprintf('oct17/R_18_CL2/pro_%d_%d.mat',fbsCount, saveNum),'QFinal');
+    FBS_out = FBS;
 end
