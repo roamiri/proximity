@@ -124,7 +124,7 @@ end
             for j=1:size(FBS,2)
                 fbs = FBS{j};
                 if rand<epsilon
-                    fbs = fbs.setPower(actions(round(rand*Npower)));
+                    fbs = fbs.setPower(actions(floor(rand*Npower+1)));
                 else
                     for kk = 1:size(states,1)
                         if states(kk,:) == fbs.state
