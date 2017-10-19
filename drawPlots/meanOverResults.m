@@ -22,7 +22,7 @@ for i=1:16
 
     
     for j=1:100
-        s = sprintf('oct17/R_18_CL2/pro_%d_%d.mat',i,j);
+        s = sprintf('oct19/R_18_CL3/pro_64_%d_%d.mat',i,j);
         filename = strcat(s);
         if exist(s)
             load(filename);
@@ -62,7 +62,7 @@ for i=1:16
     
     for j=1:100
 %         s = sprintf('Rref_1/R3_%d_%d.mat',i,j);
-        s = sprintf('oct17/R_18_CL/pro_%d_%d.mat',i,j);
+        s = sprintf('oct10/R_18_time/pro_%d_%d.mat',i,j);
         filename = strcat(s);
         if exist(s)
             load(filename);
@@ -95,7 +95,7 @@ xlabel('FBS Numbers','FontSize',14, 'FontWeight','bold');
 ylabel('Capacity(b/s/HZ)','FontSize',14, 'FontWeight','bold');
 xlim([2 16]);
 ylim([0 7]);
-legend({'threshold','proposed RF','[8]'},'FontSize',14, 'FontWeight','bold');
+legend({'threshold','proposed RF','[9]'},'FontSize',14, 'FontWeight','bold');
 %%
 figure;
 hold on;
@@ -117,7 +117,7 @@ xlabel('FBS Numbers','FontSize',14, 'FontWeight','bold');
 ylabel('Capacity(b/s/HZ)','FontSize',14, 'FontWeight','bold');
 xlim([2 16]);
 ylim([0 3.5]);
-legend({'threshold','proposed RF','[8]'},'FontSize',14, 'FontWeight','bold');
+legend({'threshold','proposed RF','[9]'},'FontSize',14, 'FontWeight','bold');
 %%
 figure;
 hold on;
@@ -130,11 +130,11 @@ title('SUM capacity of FUEs','FontSize',14, 'FontWeight','bold');
 xlabel('FBS Numbers','FontSize',14, 'FontWeight','bold');
 ylabel('Capacity(b/s/HZ)','FontSize',14, 'FontWeight','bold');
 xlim([2 16]);
-ylim([0 16])
-legend({'proposed RF','[8]'},'FontSize',14, 'FontWeight','bold');
+% ylim([0 16])
+legend({'proposed RF','[9]'},'FontSize',14, 'FontWeight','bold');
 
 
-% %%
+%%%
 % figure;
 % hold on;
 % grid on;
