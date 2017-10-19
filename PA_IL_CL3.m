@@ -106,13 +106,13 @@ end
     [G, L] = measure_channel(FBS,MBS,mue,NumRealization);
     %% Main Loop
     fprintf('Loop for %d number of FBS :\t', fbsCount);
-     textprogressbar(sprintf('calculating outputs:'));
+%      textprogressbar(sprintf('calculating outputs:'));
     count = 0;
     errorVector = zeros(1,Iterations);
     dth = 25; %meter
 
     for episode = 1:Iterations
-         textprogressbar((episode/Iterations)*100);
+%          textprogressbar((episode/Iterations)*100);
         sumQ = sumQ * 0.0;
         for j=1:size(FBS,2)
             fbs = FBS{j};
