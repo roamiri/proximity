@@ -9,8 +9,11 @@ permutationsMat = zeros(100,16);
 for i=1:100
     permutationsMat(i,:) = randperm(16,16);
 end
- parfor i=1:33
-    fprintf('Main Loop :%d',i);
+
+parfor_progress(100);
+ parfor i=1:100
     runForAll(permutationsMat(i,:),i);
+    parfor_progress;
  end
+ parfor_progress(0); % Clean up
 end

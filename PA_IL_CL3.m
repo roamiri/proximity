@@ -105,7 +105,7 @@ end
     L = zeros(fbsNum+1, fbsNum+1); % Matrix Containing large scale fading coefficients
     [G, L] = measure_channel(FBS,MBS,mue,NumRealization);
     %% Main Loop
-    fprintf('Loop for %d number of FBS :\t', fbsCount);
+%     fprintf('Loop for %d number of FBS :\t', fbsCount);
 %      textprogressbar(sprintf('calculating outputs:'));
     count = 0;
     errorVector = zeros(1,Iterations);
@@ -206,7 +206,7 @@ end
         errorVector(episode) =  sum(sum(abs(Q1-sumQ)));
         if sum(sum(abs(Q1-sumQ)))<0.001 && sum(sum(sumQ >0))
             if count>1000
-                episode  % report last episode
+%                 episode;  % report last episode
                 break % for
             else
                 count=count+1; % set counter if deviation of q is small
