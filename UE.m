@@ -24,7 +24,7 @@ classdef UE
       
       function obj = setCapacity(obj,c)
         obj.C = c;
-        obj.C_profile = [obj.C_profile c];
+%         obj.C_profile = [obj.C_profile c];
       end
    end
 end

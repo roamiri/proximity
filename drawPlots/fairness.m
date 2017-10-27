@@ -16,6 +16,8 @@ hold on;
 grid on;
 box on;
 
+fariness = zeros(1,16);
+fariness_ref = zeros(1,16);
 for i=1:16
 vec = C_FUE_Mat{i};
 vec_ref = C_FUE_Mat_ref{i};
@@ -30,9 +32,13 @@ for j=1:n
     denom = denom + vec(j)^2;
     denom_ref = denom_ref + vec_ref(j)^2;
 end
-    fariness = (num^2)/(n*denom);
-    fairness_ref = (num_ref^2)/(n*denom_ref);
-    plot(i,fariness, 'r--.', 'LineWidth',1,'MarkerSize',10);
-%     plot(i,fairness_ref, 'b--.', 'LineWidth',1,'MarkerSize',10);
+    fariness(i) = (num^2)/(n*denom);
+    fairness_ref(i) = (num_ref^2)/(n*denom_ref);
 end
+plot(fariness, 'r--.', 'LineWidth',1,'MarkerSize',10);
+% plot(fairness_ref, 'b--.', 'LineWidth',1,'MarkerSize',10);
+xlim([2 15]);
 ylim([0 1.05]);
+title('Fairness index','FontSize',14, 'FontWeight','bold');
+xlabel('FBS Numbers','FontSize',14, 'FontWeight','bold');
+ylabel('Jains Index For Fairness','FontSize',14, 'FontWeight','bold');
