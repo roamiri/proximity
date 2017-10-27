@@ -22,13 +22,13 @@ for i=1:16
 
     
     for j=1:100
-        s = sprintf('oct19/R_18_CL3/pro_64_%d_%d.mat',i,j);
+        s = sprintf('oct19/R_18_CL3/pro_128_%d_%d.mat',i,j);
         filename = strcat(s);
         if exist(s)
             load(filename);
-                C = QFinal.mue.C_profile;
-                cc = sum(C(40000:size(C,2)))/(-40000+size(C,2)+1);
-                mue_C = mue_C + cc;
+%                 mue_C  = QFinal.mue.C;
+%                 cc = sum(C(40000:size(C,2)))/(-40000+size(C,2)+1);
+                mue_C = mue_C + QFinal.mue.C;
                 sumfue = sumfue + QFinal.sum_CFUE;
                 c_fue_vec = c_fue_vec + QFinal.C_FUE;
                 Cnt = Cnt+1;
@@ -66,9 +66,9 @@ for i=1:16
         filename = strcat(s);
         if exist(s)
             load(filename);
-                C = QFinal.mue.C_profile;
-                cc = sum(C(40000:size(C,2)))/(-40000+size(C,2)+1);
-                mue_C = mue_C + cc;
+%                 C = QFinal.mue.C_profile;
+%                 cc = sum(C(40000:size(C,2)))/(-40000+size(C,2)+1);
+                mue_C = mue_C + QFinal.mue.C;
                 sumfue = sumfue + QFinal.sum_CFUE;
                 c_fue_vec = c_fue_vec + QFinal.C_FUE;
                 Cnt = Cnt+1;

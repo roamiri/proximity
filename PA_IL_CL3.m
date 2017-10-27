@@ -124,7 +124,8 @@ end
             for j=1:size(FBS,2)
                 fbs = FBS{j};
                 if rand<epsilon
-                    fbs = fbs.setPower(actions(floor(rand*Npower+1)));
+%                     fbs = fbs.setPower(actions(floor(rand*Npower+1)));
+                      fbs.P = actions(floor(rand*Npower+1));
                 else
                     for kk = 1:size(states,1)
                         if states(kk,:) == fbs.state
@@ -136,7 +137,8 @@ end
                     else                                    
                         [M, index] = max(fbs.Q(kk,:));   %IL method
                     end
-                    fbs = fbs.setPower(actions(index));
+%                     fbs = fbs.setPower(actions(index));
+                      fbs.P = actions(index);
                 end
                 FBS{j} = fbs;
             end
@@ -154,7 +156,8 @@ end
                 else                                    
                     [M, index] = max(fbs.Q(kk,:));   %IL method
                 end
-                fbs = fbs.setPower(actions(index));
+%                 fbs = fbs.setPower(actions(index));
+                fbs.P = actions(index);
                 FBS{j} = fbs;
             end
         end 
@@ -164,7 +167,8 @@ end
         for i=1:size(mue,2)
             MUE = mue(i);
             MUE.SINR = SINR_MUE_4(G, L, FBS, MBS, MUE, -120);
-            MUE = MUE.setCapacity(log2(1+MUE.SINR));
+%             MUE = MUE.setCapacity(log2(1+MUE.SINR));
+            MUE.C = log2(1+MUE.SINR);
             mue(i)=MUE;
         end
 
@@ -175,7 +179,8 @@ end
         
         for j=1:size(FBS,2)
             fbs = FBS{j};
-            fbs = fbs.setCapacity(log2(1+SINR_FUE_Vec(j)));
+%             fbs = fbs.setCapacity(log2(1+SINR_FUE_Vec(j)));
+            fbs.C_FUE = log2(1+SINR_FUE_Vec(j));
             FBS{j}=fbs;
         end
         for j=1:size(FBS,2)
@@ -233,6 +238,6 @@ end
     answer.episode = episode;
     answer.time = toc;
     QFinal = answer;
-    save(sprintf('oct19/R_18_CL3/pro_%d_%d_%d.mat',Npower, fbsCount, saveNum),'QFinal');
+    save(sprintf('oct27/R_18_CL3/pro_%d_%d_%d.mat',Npower, fbsCount, saveNum),'QFinal');
     FBS_out = FBS;
 end
