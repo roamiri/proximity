@@ -11,7 +11,7 @@ function FBS_out = PA_IL_CL3(FBS_in, Npower, fbsCount,femtocellPermutation, NumR
 clc;
 % format short
 % format compact
-tic;
+total = tic;
 %% Parameters
 Pmin = -20;                                                                                                                                                                                                                                                                                                                                                                           %dBm
 Pmax = 25; %dBm
@@ -111,6 +111,7 @@ end
     errorVector = zeros(1,Iterations);
     dth = 25; %meter
 
+    extra_time = 0.0;
     for episode = 1:Iterations
 %          textprogressbar((episode/Iterations)*100);
         sumQ = sumQ * 0.0;
@@ -127,7 +128,9 @@ end
 %                     fbs = fbs.setPower(actions(floor(rand*Npower+1)));
                       fbs.P = actions(floor(rand*Npower+1));
                 else
+                    a = tic;
                     for kk = 1:size(states,1)
+                        
                         if states(kk,:) == fbs.state
                             break;
                         end
@@ -138,11 +141,14 @@ end
                         [M, index] = max(fbs.Q(kk,:));   %IL method
                     end
 %                     fbs = fbs.setPower(actions(index));
+                      a1 = toc(a);
                       fbs.P = actions(index);
+                      
                 end
                 FBS{j} = fbs;
             end
         else
+            a = tic;
             for j=1:size(FBS,2)
                 fbs = FBS{j};
                 for kk = 1:size(states,1)
@@ -160,8 +166,9 @@ end
                 fbs.P = actions(index);
                 FBS{j} = fbs;
             end
+            a1 = toc(a);
         end 
-
+        extra_time = extra_time + a1;
         % calc FUEs and MUEs capacity
         SINR_FUE_Vec = SINR_FUE_2(G, L, FBS, MBS, -120);
         for i=1:size(mue,2)
@@ -186,6 +193,7 @@ end
         for j=1:size(FBS,2)
             fbs = FBS{j};
             qMax=max(fbs.Q,[],2);
+            a = tic;
             for jjj = 1:31
                 if actions(1,jjj) == fbs.P
                     break;
@@ -196,14 +204,17 @@ end
                     break;
                 end
             end
+            extra_time = extra_time + toc(a);
             % CALCULATING NEXT STATE AND REWARD
             beta = fbs.dMUE/dth;
             R = beta*fbs.C_FUE*(mue(1).C).^2 -(fbs.C_FUE-q_fue).^2 - (1/beta)*dum1;
+            a = tic;
             for nextState=1:size(states,1)
                 if states(nextState,:) == fbs.state
                     fbs.Q(kk,jjj) = fbs.Q(kk,jjj) + alpha*(R+gamma*qMax(nextState)-fbs.Q(kk,jjj));
                 end
             end
+            extra_time = extra_time + toc(a);
             FBS{j}=fbs;
         end
 
@@ -236,7 +247,8 @@ end
     answer.C_FUE = c_fue;
     answer.sum_CFUE = sum_CFUE;
     answer.episode = episode;
-    answer.time = toc;
+    tt = toc(total);
+    answer.time = tt - extra_time;
     QFinal = answer;
     save(sprintf('oct27/R_18_CL3/pro_%d_%d_%d.mat',Npower, fbsCount, saveNum),'QFinal');
     FBS_out = FBS;
