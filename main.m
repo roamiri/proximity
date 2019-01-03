@@ -2,7 +2,7 @@
 %                     Main Loop Runner in parallel:
 %   
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function parallel_R_pro(parallel, pref_poolSize)
+function main(parallel, pref_poolSize)
 
 permutationsMat = zeros(100,16);
 for i=1:100
