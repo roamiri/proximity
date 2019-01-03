@@ -1,5 +1,5 @@
 function SINR = SINR_FUE_2(G, L, FBS, MBS, sigma2)
-    MBS_P = MBS.P;
+    MBS_P = 10^((MBS.P-30)/10);
     fbsNum = size(FBS,2);
     SINR = zeros(1,fbsNum);
     sigma = 10^((sigma2-30)/10);

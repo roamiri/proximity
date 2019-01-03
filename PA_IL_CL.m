@@ -2,25 +2,25 @@
 %   Simulation of Power Allocation in femtocell network using 
 %   Reinforcement Learning with random adding of femtocells to the network
 %   Which contains two phase, Independent and Cooperative Learning (IL&CL) 
-%   
+%   And it takes the number of Npower as the number of columns of Q-Table
 %
-function Q = PA_IL_CL(fbsCount,femtocellPermutation, NumRealization,QTable, saveNum)
+function FBS_out = PA_IL_CL(FBS_in, Npower, fbsCount,femtocellPermutation, NumRealization, saveNum, CL)
 
 %% Initialization
 % clear all;
 clc;
-%format short
-%format compact
-tic;
+% format short
+% format compact
+total = tic;
 %% Parameters
 Pmin = -20;                                                                                                                                                                                                                                                                                                                                                                           %dBm
 Pmax = 25; %dBm
-Npower = 31;
+%StepSize = (Pmax-Pmin)/Npower; % dB
 
 dth = 25;
 Kp = 100; % penalty constant for MUE capacity threshold
 Gmue = 1.37; % bps/Hz
-StepSize = 1.5; % dB
+
 K = 1000;
 PBS = 50 ; %dBm
 sinr_th = 1.64;%10^(2/10); % I am not sure if it is 2 or 20!!!!!
@@ -30,19 +30,17 @@ N = 3;
 q_mue = 1.00; q_fue=1.0;
 %% Q-Learning variables
 % Actions
-actions = zeros(1,31);
-for i=1:31
-    actions(i) = Pmin + (i-1) * 1.5; % dBm
-end
+actions = linspace(Pmin, Pmax, Npower);
 
 % States
 states = allcomb(0:3 , 0:3); % states = (dMUE , dBS)
 
 % Q-Table
 % Q = zeros(size(states,1) , size(actions , 2));
-Q_init = ones(size(states,1) , size(actions , 2)) * 0.0;
-Q1 = ones(size(states,1) , size(actions , 2)) * inf;
-sumQ = ones(size(states,1) , size(actions , 2)) * 0.0;
+Q_init = ones(size(states,1) , Npower) * 0.0;
+Q1 = ones(size(states,1) , Npower) * inf;
+sumQ = ones(size(states,1) , Npower) * 0.0;
+% meanQ = ones(size(states,1) , Npower) * 0.0;
 
 alpha = 0.5; gamma = 0.9; epsilon = 0.1 ; Iterations = 50000;
 %% Generate the UEs
@@ -91,48 +89,31 @@ for i=1:fbsCount
     FBS{i} = FBS_Max{femtocellPermutation(i)};
 end
 
-    %% Initialization and find MUE Capacity
-    % permutedPowers = npermutek(actions,3);
-    permutedPowers = randperm(size(actions,2),size(FBS,2));
-    % y=randperm(size(permutedPowers,1));
+    %% Initialize Agents (FBSs)
+%     permutedPowers = randperm(Npower,size(FBS,2));
+    
     for j=1:size(FBS,2)
         fbs = FBS{j};
-        fbs = fbs.setPower(actions(permutedPowers(j)));
+%         fbs = fbs.setPower(actions(permutedPowers(j)));
         fbs = fbs.getDistanceStatus;
         fbs = fbs.setQTable(Q_init);
         FBS{j} = fbs;
     end
-%     selectedMUE.SINR = SINR_MUE(FBS, BS, selectedMUE, -120, 1000);
-%     selectedMUE.C = log2(1+selectedMUE.SINR);
-
-%     if selectedMUE.C < gamma_th
-%         I = 1;
-%     else
-%         I = 0;
-%     end
-% 
-%     for j=1:size(FBS,2)
-%         fbs = FBS{j};
-%         fbs.state(1,1) = I;
-%         FBS{j} = fbs;
-%     end
 %% Calc channel coefficients
     fbsNum = size(FBS,2);
     G = zeros(fbsNum+1, fbsNum+1); % Matrix Containing small scale fading coefficients
     L = zeros(fbsNum+1, fbsNum+1); % Matrix Containing large scale fading coefficients
     [G, L] = measure_channel(FBS,MBS,mue,NumRealization);
     %% Main Loop
-    fprintf('Loop for %d number of FBS :\t', fbsCount);
-%     textprogressbar(sprintf('calculating outputs:'));
+%     fprintf('Loop for %d number of FBS :\t', fbsCount);
+%      textprogressbar(sprintf('calculating outputs:'));
     count = 0;
-    MUE_C = zeros(1,Iterations);
-    xx = zeros(1,Iterations);
     errorVector = zeros(1,Iterations);
     dth = 25; %meter
 
+    extra_time = 0.0;
     for episode = 1:Iterations
-%         textprogressbar((episode/Iterations)*100);
-        permutedPowers = randperm(size(actions,2),size(FBS,2));
+%          textprogressbar((episode/Iterations)*100);
         sumQ = sumQ * 0.0;
         for j=1:size(FBS,2)
             fbs = FBS{j};
@@ -141,30 +122,33 @@ end
         
         if (episode/Iterations)*100 < 80
             % Action selection with epsilon=0.1
-            if rand<epsilon
-                for j=1:size(FBS,2)
-                    fbs = FBS{j};
-                    fbs = fbs.setPower(actions(permutedPowers(j)));
-                    FBS{j} = fbs;
-                end
-            else
-                for j=1:size(FBS,2)
-                    fbs = FBS{j};
+            for j=1:size(FBS,2)
+                fbs = FBS{j};
+                if rand<epsilon
+%                     fbs = fbs.setPower(actions(floor(rand*Npower+1)));
+                      fbs.P = actions(floor(rand*Npower+1));
+                else
+                    a = tic;
                     for kk = 1:size(states,1)
+                        
                         if states(kk,:) == fbs.state
                             break;
                         end
                     end
-                    if size(FBS,2) > 4 
-                        [M, index] = max(sumQ(kk,:));    % CL method
+                    if CL == 1 
+                        [M, index] = max(sumQ(kk,:));     % CL method
                     else                                    
                         [M, index] = max(fbs.Q(kk,:));   %IL method
                     end
-                    fbs = fbs.setPower(actions(index));
-                    FBS{j} = fbs;
+%                     fbs = fbs.setPower(actions(index));
+                      a1 = toc(a);
+                      fbs.P = actions(index);
+                      
                 end
+                FBS{j} = fbs;
             end
         else
+            a = tic;
             for j=1:size(FBS,2)
                 fbs = FBS{j};
                 for kk = 1:size(states,1)
@@ -173,33 +157,28 @@ end
                     end
                 end
                 
-                if size(FBS,2) > 4 
+                if CL == 1 
                     [M, index] = max(sumQ(kk,:));     % CL method
                 else                                    
                     [M, index] = max(fbs.Q(kk,:));   %IL method
                 end
-                fbs = fbs.setPower(actions(index));
+%                 fbs = fbs.setPower(actions(index));
+                fbs.P = actions(index);
                 FBS{j} = fbs;
             end
+            a1 = toc(a);
         end 
-
+        extra_time = extra_time + a1;
         % calc FUEs and MUEs capacity
         SINR_FUE_Vec = SINR_FUE_2(G, L, FBS, MBS, -120);
-        C_FUE_Vec = log2(1+SINR_FUE_Vec);
         for i=1:size(mue,2)
             MUE = mue(i);
             MUE.SINR = SINR_MUE_4(G, L, FBS, MBS, MUE, -120);
-            MUE = MUE.setCapacity(log2(1+MUE.SINR));
+%             MUE = MUE.setCapacity(log2(1+MUE.SINR));
+            MUE.C = log2(1+MUE.SINR);
             mue(i)=MUE;
         end
-        
-%         MUE_C(1,episode) = selectedMUE.C;
-        xx(1,episode) = episode;
-%         R = K - (selectedMUE.SINR - sinr_th)^2;
-%             deviation_FUE=0.0;
-%             for i=1:size(FBS,2)
-%                 deviation_FUE = deviation_FUE + (fbs.C_FUE-q_M)^2;
-%             end
+
         dum1 = 1.0;
         for i=1:size(mue,2)
             dum1 = dum1 * (mue(i).C-q_mue)^2;
@@ -207,12 +186,14 @@ end
         
         for j=1:size(FBS,2)
             fbs = FBS{j};
-            fbs = fbs.setCapacity(log2(1+SINR_FUE_Vec(j)));
+%             fbs = fbs.setCapacity(log2(1+SINR_FUE_Vec(j)));
+            fbs.C_FUE = log2(1+SINR_FUE_Vec(j));
             FBS{j}=fbs;
         end
         for j=1:size(FBS,2)
             fbs = FBS{j};
             qMax=max(fbs.Q,[],2);
+            a = tic;
             for jjj = 1:31
                 if actions(1,jjj) == fbs.P
                     break;
@@ -223,14 +204,17 @@ end
                     break;
                 end
             end
+            extra_time = extra_time + toc(a);
             % CALCULATING NEXT STATE AND REWARD
             beta = fbs.dMUE/dth;
             R = beta*fbs.C_FUE*(mue(1).C).^2 -(fbs.C_FUE-q_fue).^2 - (1/beta)*dum1;
+            a = tic;
             for nextState=1:size(states,1)
                 if states(nextState,:) == fbs.state
                     fbs.Q(kk,jjj) = fbs.Q(kk,jjj) + alpha*(R+gamma*qMax(nextState)-fbs.Q(kk,jjj));
                 end
             end
+            extra_time = extra_time + toc(a);
             FBS{j}=fbs;
         end
 
@@ -238,7 +222,7 @@ end
         errorVector(episode) =  sum(sum(abs(Q1-sumQ)));
         if sum(sum(abs(Q1-sumQ)))<0.001 && sum(sum(sumQ >0))
             if count>1000
-                episode  % report last episode
+%                 episode;  % report last episode
                 break % for
             else
                 count=count+1; % set counter if deviation of q is small
@@ -247,41 +231,25 @@ end
             Q1=sumQ;
             count=0;  % reset counter when deviation of q from previous q is large
         end
-
-%         if selectedMUE.C < gamma_th
-%             I = 1;
-%         else
-%             I = 0;
-%         end
-% 
-%         for j=1:size(FBS,2) 
-%             fbs = FBS{j};
-%             fbs.state(1,1) = I;
-%             FBS{j} = fbs;
-%         end
     end
-    Q = sumQ;
+%     Q = sumQ;
     answer.mue = mue;
     answer.Q = sumQ;
     answer.Error = errorVector;
     answer.FBS = FBS;
-%     min_CFUE = inf;
     for j=1:size(FBS,2)
-%         C = FBS{1,j}.C_profile;
-        c_fue(1,j) = FBS{1,j}.C_FUE;%sum(C(40000:size(C,2)))/(-40000+size(C,2));
-%         if min_CFUE > c_fue(1,j)
-%             min_CFUE = c_fue(1,j);
-%         end
+        c_fue(1,j) = FBS{1,j}.C_FUE;
     end
     sum_CFUE = 0.0;
     for i=1:size(FBS,2)
-        sum_CFUE = sum_CFUE + c_fue(1,i);
+        sum_CFUE = sum_CFUE + FBS{i}.C_FUE;
     end
     answer.C_FUE = c_fue;
     answer.sum_CFUE = sum_CFUE;
-%     answer.min_CFUE = min_CFUE;
     answer.episode = episode;
-    answer.time = toc;
+    tt = toc(total);
+    answer.time = tt - extra_time;
     QFinal = answer;
-    save(sprintf('oct17/R_18_CL/pro_%d_%d.mat',fbsCount, saveNum),'QFinal');
+    save(sprintf('results/pro_%d_%d_%d.mat',Npower, fbsCount, saveNum),'QFinal');
+    FBS_out = FBS;
 end
