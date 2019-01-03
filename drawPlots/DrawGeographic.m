@@ -44,10 +44,10 @@ dB1 = 50; dB2 = 150; dB3 = 400;
 BS = BaseStation(0 , 0 , 50);
 % FBS = QFinal.FBS;
 fbs = FBS{1};
-p1 = plot(fbs.X, fbs.Y, 'r');
-p1.Marker = '*';
-p2 = plot(fbs.X, fbs.Y+10, 'k');
-p2.Marker = 'x';
+p1 = plot(fbs.X, fbs.Y, '*r');
+% p1.Marker = '*';
+p2 = plot(fbs.X, fbs.Y+10, 'xk');
+% p2.Marker = 'x';
 for i=2:16
     fbs = FBS{i};
     p = plot(fbs.X, fbs.Y, 'r','LineWidth',0.75,'MarkerSize',8);
@@ -61,43 +61,43 @@ for i=2:16
 end
 axis([-300,350,-100,350]);
 
-p3 = plot(BS.X, BS.Y, 'b','LineWidth',1,'MarkerSize',8);
-p3.Marker = 'diamond';
+p3 = plot(BS.X, BS.Y, 'db','LineWidth',1,'MarkerSize',8);
+% p3.Marker = 'diamond';
 circle(BS.X,BS.Y,dB1, 'b');
 circle(BS.X,BS.Y,dB2, 'b');
 circle(BS.X,BS.Y,dB3, 'b');
 % selectedMUE = QFinal.mue;
 selectedMUE.X = 204;
 selectedMUE.Y = 207;
-p4 = plot(selectedMUE.X, selectedMUE.Y, 'k','LineWidth',1,'MarkerSize',8);
+p4 = plot(selectedMUE.X, selectedMUE.Y, 'sk','LineWidth',1,'MarkerSize',8);
 % p1 = plot(150, 150, 'k');
 % p5 = plot(-200, 0, 'k');
 % p5.Marker = 'square';
 % p1.Marker = 'square';
-p4.Marker = 'square';
+% p4.Marker = 'square';
 circle(selectedMUE.X,selectedMUE.Y,dM1, 'r');
 circle(selectedMUE.X,selectedMUE.Y,dM2, 'r');
 circle(selectedMUE.X,selectedMUE.Y,dM3, 'r');
 
-title('System Model','FontSize',14, 'FontWeight','bold');
-xlabel('x position','FontSize',14, 'FontWeight','bold');
-ylabel('y position','FontSize',14, 'FontWeight','bold');
-legend([p3 p1 p2 p4],{'BS','FBS', 'FUE', 'MUE'});
+% title('System Model','FontSize',14, 'FontWeight','bold');
+xlabel('x position','FontSize',12);%, 'FontWeight','bold');
+ylabel('y position','FontSize',12);%, 'FontWeight','bold');
+legend([p3 p1 p2 p4],{'MBS','FBS', 'FUE', 'MUE'});
 box on;
-set(gca,'fontsize',14, 'FontWeight','bold');
-% pbaspect([1 1 1])
-% 
-% text(-250, 270, 'd', 'Color', 'b');
-% text(-230, 270, 'BS');
-% 
-% text(-250, 250, '*', 'Color', 'r');
-% text(-230, 250, 'FBS');
-% 
-% text(-250, 230, 'x', 'Color', 'k');
-% text(-230, 230, 'FUE');
-% 
-% text(-250, 210, 's', 'Color', 'r');
-% text(-230, 210, 'MUE');
+set(gca,'fontsize',12);%, 'FontWeight','bold');
+
+
+x1 = -270;
+y1 = 20;
+txt1 = 'MBS rings \rightarrow';
+text(x1,y1,txt1);
+
+x1 = -25;
+y1 = 270;
+txt1 = 'MUE rings \rightarrow';
+text(x1,y1,txt1);
+
+%%
 
 % ht = text(-230, 270, {'{\color{blue} d } BS', '{\color{red} * } FBS', '{\color{black} x } FUE' , '{\color{black} s } MUE'}, 'EdgeColor', 'k');
 % ht = text(-230, 270, {'{\color{blue} d } BS', '{\color{red} * } FBS','{\color{black} s } MUE'}, 'EdgeColor', 'k');
