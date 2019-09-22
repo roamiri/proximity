@@ -12,7 +12,7 @@ end
 if parallel
     parpool(pref_poolSize)
     parfor_progress(100);
-    for i=1:1
+    for i=1:100
         runForAll(permutationsMat(i,:),i);
         pause(rand);
         parfor_progress;
